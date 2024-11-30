@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'space_monobold';
+    src: url('SpaceMono-Bold-webfont.eot');
+    src: url('SpaceMono-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('SpaceMono-Bold-webfont.woff2') format('woff2'),
+         url('SpaceMono-Bold-webfont.woff') format('woff'),
+         url('SpaceMono-Bold-webfont.ttf') format('truetype'),
+         url('SpaceMono-Bold-webfont.svg#space_monobold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+

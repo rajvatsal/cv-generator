@@ -1,0 +1,13 @@
+@import url('../assets/inter-webfont/stylesheet.css');
+@import url('../assets/spacemono-webfont/web fonts/spacemono-main.css');
+@import url('../assets/source-sans-pro-webfont/stylesheet.css');
+
+:root {
+  --ff-inter: 'Inter-Regular.woff2', sans-serif;
+  --ff-source-sans: 'source_sans_proregular', sans-serif;
+  --ff-spacemono: 'space_mono_regular', serif;
+}
+
+body {
+  font-family: var(--ff-spacemono);
+}

@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'space_monoregular';
+    src: url('SpaceMono-Regular-webfont.eot');
+    src: url('SpaceMono-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('SpaceMono-Regular-webfont.woff2') format('woff2'),
+         url('SpaceMono-Regular-webfont.woff') format('woff'),
+         url('SpaceMono-Regular-webfont.ttf') format('truetype'),
+         url('SpaceMono-Regular-webfont.svg#space_monoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+

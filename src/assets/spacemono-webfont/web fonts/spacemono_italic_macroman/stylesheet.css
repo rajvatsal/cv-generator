@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'space_monoitalic';
+    src: url('SpaceMono-Italic-webfont.eot');
+    src: url('SpaceMono-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('SpaceMono-Italic-webfont.woff2') format('woff2'),
+         url('SpaceMono-Italic-webfont.woff') format('woff'),
+         url('SpaceMono-Italic-webfont.ttf') format('truetype'),
+         url('SpaceMono-Italic-webfont.svg#space_monoitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
