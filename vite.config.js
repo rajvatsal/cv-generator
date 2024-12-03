@@ -8,4 +8,12 @@ export default defineConfig({
 		port: 9000,
 		open: true
 	},
+	module: {
+		rules: [
+			{
+				test: /\.scss$/,
+				loaders: ['style', 'css', 'scss']
+			},
+		],
+	},
 })
