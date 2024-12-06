@@ -19,9 +19,14 @@
     "@vitejs/plugin-react": "^4.3.4",
     "biome": "^0.3.3",
     "globals": "^15.12.0",
+    "postcss": "^8.4.49",
     "sass-embedded": "^1.81.0",
     "sass-loader": "^16.0.3",
     "scss-loader": "^0.0.1",
+    "stylelint": "^16.11.0",
+    "stylelint-config-sass-guidelines": "^12.1.0",
+    "stylelint-config-standard": "^36.0.1",
+    "stylelint-scss": "^6.10.0",
     "vite": "^6.0.1"
   }
 }

@@ -1,0 +1,8 @@
+{ "extends": ["stylelint-config-sass-guidelines"],
+  "syntax": "scss",
+  "rules": {
+    "@stylistic/function-parentheses-space-inside": "never-single-line",
+    "@stylistic/indentation": "2",
+    "scss/dollar-variable-pattern": ""
+  }
+}
