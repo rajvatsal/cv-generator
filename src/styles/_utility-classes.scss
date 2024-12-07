@@ -44,3 +44,21 @@ small,
   justify-content: center;
   align-items: center;
 }
+
+.icons {
+  display: inline-block;
+  color: var(--clr-neutral-900);
+  height: 1em;
+  aspect-ratio: 1 / 1;
+  line-height: 1;
+}
+
+.icons-container {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    color: inherit;
+    margin-inline: 2px;
+  }
+}
