@@ -62,3 +62,38 @@ small,
     margin-inline: 2px;
   }
 }
+
+.btn {
+  display: inline-flex;
+  position: relative;
+  white-space: nowrap;
+  text-decoration: none;
+  line-height: 1;
+
+  font-size: var(--btn-fs);
+  border-radius: var(--btn-radius);
+  padding: var(--sp-100) var(--sp-100);
+  cursor: pointer;
+
+  &:focus {
+    outline: 1px solid var(--clr-neutral-500);
+  }
+
+  &--primary {
+    @extend .btn;
+    border: var(--btn--primary-border);
+  }
+
+  &--secondary {
+    @extend .btn;
+  }
+
+  &--accent {
+    @extend .btn;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+}

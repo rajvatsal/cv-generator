@@ -64,12 +64,6 @@ $warning: $yellow;
   --clr-error-400: #{$error};
   --clr-warning-400: #{$warning};
 
-  /* --------------------------------
-
-  Font Family
-
-  -------------------------------- */
-
   --ff-primary-400: #{$ff-inter-Regular};
   --ff-primary-700: #{$ff-inter-Bold};
   --ff-secondary-400: #{$ff-spacemono-Regular};
@@ -77,7 +71,7 @@ $warning: $yellow;
 
   /* --------------------------------
 
-  Font Size
+  Font
 
   -------------------------------- */
 
@@ -123,7 +117,7 @@ $warning: $yellow;
 
   /* --------------------------------
 
-  letter Space
+  letter Spacing
 
   -------------------------------- */
 
@@ -156,42 +150,6 @@ $warning: $yellow;
   --btn-radius: 5px;
 
   --btn--primary-border: 2px solid var(--clr-primary-500);
-
-  /* --------------------------------
-
-  Inputs
-
-  -------------------------------- */
-}
-
-/* --------------------------------
-
-Global Styles
-
--------------------------------- */
-
-body {
-  font-family: var(--ff-primary-400);
-  font-size: var(--fs-base);
-}
-
-p {
-  font-size: var(--fs-base);
-}
-
-input[type='text'],
-input[type='textarea'],
-button {
-  appearance: none;
-  outline: none;
-}
-
-input {
-  accent-color: var(--clr-primary-300);
-}
-
-label {
-  cursor: pointer;
 }
 
 /* --------------------------------
@@ -257,4 +215,26 @@ h6 {
 
 :root {
   isolation: isolate;
+}
+
+/* --------------------------------
+
+My Defaults
+
+ -------------------------------- */
+
+body {
+  font-family: var(--ff-primary-400);
+  font-size: var(--fs-base);
+}
+
+p {
+  font-size: var(--fs-base);
+}
+
+input[type='text'],
+input[type='textarea'],
+button {
+  appearance: none;
+  outline: none;
 }
