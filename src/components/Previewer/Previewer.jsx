@@ -1,3 +1,5 @@
+import "./Previewer.scss";
+
 export function Previewer() {
   return (
     <div className="previewer">

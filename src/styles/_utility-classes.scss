@@ -1,4 +1,13 @@
 h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--ff-secondary-400);
+}
+
+h1,
 .fs-700 {
   font-size: var(--fs-700);
   letter-spacing: var(--l-sp-100);

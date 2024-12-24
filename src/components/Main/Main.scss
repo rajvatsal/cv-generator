@@ -1,0 +1,7 @@
+.main__content {
+  --sp-main__content-top: var(--sp-400);
+
+  display: grid;
+  grid-template: 1fr / minmax(auto, 30%) 1fr;
+  padding-inline: calc(var(--pg-pad) + var(--sp-400));
+}
