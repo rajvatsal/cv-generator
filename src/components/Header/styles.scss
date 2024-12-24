@@ -1,6 +1,7 @@
 .header {
   display: flex;
   align-items: center;
+  padding: var(--sp-400);
 
   &__icn {
     width: calc(var(--icn-size-200) + 2px);
