@@ -49,7 +49,6 @@ $warning: $orange;
   --clr-neutral-400: #969696;
   --clr-neutral-300: #b7b7b7;
   --clr-neutral-200: #dadada;
-  --clr-neutral-accent: #ededed;
   --clr-neutral-100: #fdfdfd;
 
   --clr-primary-200: #{c.adjust($primary, $lightness: 70%, $space: oklch)};
@@ -173,29 +172,11 @@ $warning: $orange;
   -------------------------------- */
 
   --btn_ff: var(--ff-secondary-400);
-  --btn_fs: var(--fs-base);
-  --btn_radius: 4.8px;
-  --btn_paddding: var(--sp-300) var(--sp-500);
+  --btn_fs: 1rem;
+  --btn_radius: 5px;
 
-  --btn_bg--primary: var(--clr-primary-400);
-  --btn_clr--primary: var(--clr-neutral-100);
-  --btn_bg--primary--active: var(--clr-primary-200);
-  --btn_clr--primary--active: var(--clr-primary-400);
-
-  --btn_bg--secondary: var(--clr-neutral-accent);
-  --btn_clr--secondary: var(--clr-neutral-800);
-  --btn_bg--secondary--active: var(--clr-neutral-300);
-  --btn_clr--secondary--active: var(--clr-neutral-900);
-
-  --btn_bg--accent: var(--clr-semantic_invalid-400);
-  --btn_clr--accent: var(--clr-semantic_invalid-100);
-  --btn_bg--accent--active: var(--clr-semantic_invalid-100);
-  --btn_clr--accent--active: var(--clr-semantic_invalid-400);
-
-  --btn_bg--accent_light: var(--clr-semantic_invalid-100);
-  --btn_clr--accent_light: var(--clr-semantic_invalid-400);
-  --btn_bg--accent_light--active: var(--clr-semantic_invalid-400);
-  --btn_clr--accent_light--active: var(--clr-semantic_invalid-100);
+  --btn_bg--primary-dark: var(--clr-primary-400);
+  --btn_clr--primary-dark: var(--clr-neutral-100);
 
   /* --------------------------------
 
