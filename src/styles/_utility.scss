@@ -21,18 +21,18 @@ $ff-source_sans-ExtraLight: 'source_sans_proextralight', sans-serif;
 $ff-spacemono-Regular: 'space_monoregular', monospace;
 $ff-spacemono-Bold: 'space_monobold', monospace;
 
-$blue: oklch(34.39% 0.0662 258.82deg);
-$green: oklch(92.14% 0.0471 179.88deg);
-$green-2: oklch(75.59% 0.1526 133.22);
-$red: oklch(64.58% 0.2151 21.72);
-$yellow: oklch(87.65% 0.1652 90.97);
+$dark-blue: oklch(20.94% 0.0133 204.69);
+$green: oklch(89.5% 0.20970256696719095 144.2306789218844);
+$red: oklch(44.99% 0.1366 21.88);
+$orange: oklch(82.05% 0.1633 85.99);
+$purple: oklch(58.1% 0.0765 346.24);
 
-$primary: $blue;
-$accent: $green;
+$primary: $dark-blue;
+$accent: $purple;
 
-$success: $green-2;
-$error: $red;
-$warning: $yellow;
+$valid: $green;
+$invalid: $red;
+$warning: $orange;
 
 :root {
   /* --------------------------------
@@ -51,18 +51,37 @@ $warning: $yellow;
   --clr-neutral-200: #dadada;
   --clr-neutral-100: #fdfdfd;
 
+  --clr-primary-200: #{c.adjust($primary, $lightness: 70%, $space: oklch)};
   --clr-primary-300: #{c.adjust($primary, $lightness: 10%, $space: oklch)};
   --clr-primary-400: #{$primary};
-  --clr-primary-500: #{c.adjust($primary, $lightness: -10%, $space: oklch)};
 
-  --clr-accent-300: #{c.adjust($accent, $lightness: 10%, $space: oklch)};
+  --clr-accent-300: #{c.adjust($accent, $lightness: 50%, $space: oklch)};
   --clr-accent-400: #{$accent};
-  --clr-accent-500: #{c.adjust($accent, $lightness: -10%, $space: oklch)};
+  --clr-accent-500: #{c.adjust($accent, $lightness: -30%, $space: oklch)};
 
   /* Feedback Colors */
-  --clr-success-400: #{$success};
-  --clr-error-400: #{$error};
-  --clr-warning-400: #{$warning};
+  --clr-semantic_valid-400: #{$valid};
+  --clr-semantic_valid-100: #{c.adjust(
+      $valid,
+      $chroma: -30%,
+      $lightness: 10%,
+      $space: oklch
+    )};
+
+  --clr-semantic_invalid-400: #{$invalid};
+  --clr-semantic_invalid-100: #{c.adjust(
+      $invalid,
+      $lightness: 70%,
+      $space: oklch
+    )};
+
+  --clr-semantic_warning-400: #{$warning};
+  --clr-semantic_warning-100: #{c.adjust(
+      $warning,
+      $chroma: -15%,
+      $lightness: 10%,
+      $space: oklch
+    )};
 
   /* --------------------------------
 
