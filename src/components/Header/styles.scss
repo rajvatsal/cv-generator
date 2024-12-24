@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  align-items: center;
+
+  &__icn {
+    width: calc(var(--icn-size-200) + 2px);
+    margin-right: var(--sp-300);
+  }
+
+  &__title {
+    font-size: var(--fs-100);
+    font-family: var(--ff-primary-700);
+    color: var(--clr-neutral-600);
+    letter-spacing: 2px;
+    font-weight: normal;
+  }
+
+  &__desc {
+    margin-left: auto;
+    font-size: var(--fs-100);
+    font-family: var(--ff-primary-300);
+    color: var(--clr-neutral-600);
+  }
+}
