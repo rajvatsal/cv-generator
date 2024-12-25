@@ -4,4 +4,5 @@
   display: grid;
   grid-template: 1fr / minmax(auto, 30%) 1fr;
   padding-inline: calc(var(--pg-pad) + var(--sp-400));
+  min-height: 100vh;
 }
