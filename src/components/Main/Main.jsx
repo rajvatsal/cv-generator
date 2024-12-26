@@ -1,7 +1,7 @@
 import './Main.scss'
-import { templates } from '../Templates/Templates.jsx'
 import { useState, useCallback } from 'react'
-import { CommonControls } from '../Templates/CommonControls.jsx'
+import { templates } from '../Templates/Templates.jsx'
+import { CommonControls } from './CommonControls.jsx'
 
 function ControlsContainer({ setTemplate, children }) {
   return (
