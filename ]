@@ -1,0 +1,25 @@
+import './Templates.scss'
+
+import tmpl_1 from './TemplateOne/main.jsx'
+import tmpl_2 from './TemplateTwo/main.jsx'
+import tmpl_3 from './TemplateThree/main.jsx'
+import { useState, useCallback } from 'react'
+import { CommonControls } from './CommonControls.jsx'
+
+function Controls({ props, children }) {
+  return (
+    <div className="main__controls">
+      <CommonControls {...props} />
+      {children}
+    </div>
+  )
+}
+
+function Preview() {
+  return <div className="main__previewer" />
+}
+
+function InitRender() {
+  const [template, setTemplate] = useState('1')
+  const updateTemplate = useCallback((val) => setTemplate(val))
+}

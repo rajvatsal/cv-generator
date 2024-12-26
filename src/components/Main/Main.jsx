@@ -1,15 +1,10 @@
-import "./Main.scss";
-
-import { Controls } from "../Controls/Controls.jsx";
-import { Previewer } from "../Previewer/Previewer.jsx";
+import './Main.scss'
+import { InitRender } from '../Templates/Templates.jsx'
 
 export function Main() {
-  return(
-    <main>
-      <div className="main__content">
-        <Controls />
-        <Previewer />
-      </div>
+  return (
+    <main className="main">
+      <InitRender />
     </main>
-  );
+  )
 }
