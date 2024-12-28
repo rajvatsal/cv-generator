@@ -1,36 +1,32 @@
 import './Main.scss'
 import { useState, useCallback } from 'react'
 import { templates } from '../Templates/Templates.jsx'
-import { CommonControls } from './CommonControls.jsx'
-
-function ControlsContainer({ setTemplate, children }) {
-  return (
-    <div className="main__controls">
-      {children}
-      <CommonControls setTemplate={setTemplate} />
-    </div>
-  )
-}
-
-function PreviewContainer({ children }) {
-  return <div className="main__previewer">{children}</div>
-}
+import { TemplateSelector } from '../TemplateSelector/TemplateSelector.jsx'
 
 export function Main() {
   const [template, setTemplate] = useState('1')
-  const updateTemplate = useCallback((val) => setTemplate(val))
-
-  const { Controls, Previewer } = templates.find(
-    (_, i) => i === Number.parseInt(template) - 1
+  const [details, setDetails] = useState(
+    templates[Number.parseInt(template) - 1].details
   )
+
+  const { Controls, Previewer } = templates[Number.parseInt(template) - 1]
+
+  const updateDetails = (data) => {
+    setDetails(Object.assign({}, details, data))
+  }
+
+  const updateTemplate = (val) => {
+    const templateCount = Number.parseInt(val)
+    setTemplate(Number.parseInt(templateCount))
+  }
+
   return (
     <main className="main">
-      <ControlsContainer setTemplate={updateTemplate}>
-        <Controls />
-      </ControlsContainer>
-      <PreviewContainer>
-        <Previewer />
-      </PreviewContainer>
+      <div className="main__sidebar">
+        <TemplateSelector updateTemplate={updateTemplate} />
+        <Controls className="main__controls" updateDetails={updateDetails} />
+      </div>
+      <Previewer className="main__preview" details={details} />
     </main>
   )
 }

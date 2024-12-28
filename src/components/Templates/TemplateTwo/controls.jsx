@@ -1,3 +1,7 @@
-export function Controls() {
-  return <h2>Controls TWO</h2>
+export function Controls({ updateTemplate, updateData, CommonControls }) {
+  return (
+    <div>
+      <h5>Controls me</h5>
+    </div>
+  )
 }

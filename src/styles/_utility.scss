@@ -61,6 +61,7 @@ $warning: $orange;
   --clr-accent-500: #{c.adjust($accent, $lightness: -30%, $space: oklch)};
 
   /* Feedback Colors */
+  --clr-semantic_valid-500: #{c.adjust($valid, $lightness: -40%, $space: oklch)};
   --clr-semantic_valid-400: #{$valid};
   --clr-semantic_valid-100: #{c.adjust(
       $valid,

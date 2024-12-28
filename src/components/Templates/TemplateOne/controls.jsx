@@ -1,3 +1,9 @@
-export function Controls() {
-  return <h2>Controls ONE</h2>
+import { PersonalDetails } from '../../PersonalDetails/PersonalDetails.jsx'
+
+export function Controls({ updateDetails }) {
+  return (
+    <div>
+      <PersonalDetails updateDetails={updateDetails} />
+    </div>
+  )
 }

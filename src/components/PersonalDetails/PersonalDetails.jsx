@@ -1,6 +1,6 @@
-export function FundementalDetails({ updateDetails }) {
+export function PersonalDetails({ updateDetails }) {
   return (
-    <div className="main__controls__fundemental-inputs">
+    <div className="main__controls_personal-details">
       <h2>Personal Details #</h2>
       <div className="input-container">
         <input
@@ -8,7 +8,7 @@ export function FundementalDetails({ updateDetails }) {
           type="text"
           id="usr_name"
           name="usr_name"
-          pattern="[a-zA-Z ]{1,}"
+          pattern="[a-zA-Z ]+"
           placeholder="Name *"
           onChange={(e) =>
             !e.target.validity.patternMismatch &&
@@ -34,7 +34,7 @@ export function FundementalDetails({ updateDetails }) {
           pattern=".*"
           placeholder="Address"
           onChange={(e) =>
-            !e.target.validity.patternMismatch &&
+            e.target.validity.valid &&
             updateDetails({ address: e.target.value })
           }
         />
@@ -53,11 +53,36 @@ export function FundementalDetails({ updateDetails }) {
           type="text"
           id="usr_number"
           name="usr_number"
-          pattern="\+[0-9]{1,2} [0-9]{3}-[0-9]{3}-[0-9]{4}"
+          pattern=".*"
           placeholder="Phone Number *"
-          onChange={(e) =>
-            !e.target.validity.patternMismatch &&
-            updateDetails({ phoneNumber: e.target.value })
+          onChange={(e) => {
+            e.preventDefault()
+            const pattern = /^\+[0-9]{1,2} [0-9]{3}-[0-9]{3}-[0-9]{4}$/
+            const partialPattern =
+              /^\+[0-9]{0,2}(?: [0-9]{0,3})?(?:-[0-9]{1,3})?(?:-[0-9]{1,4})?$/
+
+            console.log(
+              e.target.value.match(pattern),
+              e.target.value.match(partialPattern)
+            )
+
+            if (
+              e.target.value.match(pattern) ||
+              e.target.value.match(partialPattern)
+            ) {
+              e.target.setCustomValidity('')
+              updateDetails({ phoneNumber: e.target.value })
+            } else e.target.setCustomValidity('not true')
+
+            const isComplete = e.target.value.match(pattern) ? 'true' : 'false'
+            e.target.setAttribute('data-complete', isComplete)
+          }}
+          onBlur={(e) =>
+            e.target.setCustomValidity(
+              e.target.getAttribute('data-complete') === 'true'
+                ? ''
+                : 'not true'
+            )
           }
           required
         />
@@ -73,7 +98,7 @@ export function FundementalDetails({ updateDetails }) {
       <div className="input-container">
         <input
           className="input-container__input"
-          type="mail"
+          type="email"
           id="usr_mail"
           name="usr_mail"
           pattern=".*"

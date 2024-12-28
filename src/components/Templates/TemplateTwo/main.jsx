@@ -1,4 +1,10 @@
+import { useState } from 'react'
 import { Previewer } from './previewer.jsx'
 import { Controls } from './controls.jsx'
 
-export default { Previewer, Controls }
+const details = {
+  name: 'vatsal',
+  address: 'nein',
+}
+
+export default { details, Previewer, Controls }

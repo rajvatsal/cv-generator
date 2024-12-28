@@ -1,3 +1,9 @@
-export function Controls() {
-  return <h2>Controls THREE</h2>
+export function Controls({ name, address, phoneNumber }) {
+  return (
+    <>
+      <h2>{name}</h2>
+      <div>{address}</div>
+      <span>{phoneNumber}</span>
+    </>
+  )
 }
