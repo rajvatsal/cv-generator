@@ -24,7 +24,11 @@ export function Main() {
     <main className="main">
       <div className="main__sidebar">
         <TemplateSelector updateTemplate={updateTemplate} />
-        <Controls className="main__controls" updateDetails={updateDetails} />
+        <Controls
+          className="main__controls"
+          updateDetails={updateDetails}
+          details={details}
+        />
       </div>
       <Previewer className="main__preview" details={details} />
     </main>
