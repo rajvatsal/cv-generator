@@ -14,8 +14,58 @@ const details = {
       isVisible: true,
     },
   ],
-  coreQualifications: [],
-  education: [{ type: 'Bachelors', finished: false }],
+  coreQualifications: [
+    {
+      id: 1,
+      data: 'Critical analysis',
+      isVisible: true,
+    },
+    {
+      id: 2,
+      data: 'Critical analysis',
+      isVisible: true,
+    },
+    {
+      id: 3,
+      data: 'Research proficiency',
+      isVisible: true,
+    },
+    {
+      id: 4,
+      data: 'Literary theory knowledge',
+      isVisible: true,
+    },
+    {
+      id: 5,
+      data: 'Creative thinking',
+      isVisible: true,
+    },
+  ],
+  education: [
+    {
+      degree: 'Bachelor of Arts',
+      finished: false,
+      date: 'June 2024',
+      subject: 'English Literature',
+      address: 'Georgia State University, Atalanta, GA',
+      gpa: 3.9,
+      extras: [
+        ['minor in creative writing'],
+        ['english literature student club'],
+        [
+          'study abroad program',
+          `"Victorian London's Underworld"- (Spring 2019)`,
+        ],
+      ],
+      relevantCourseWork: [
+        'Shakespearean Studies',
+        'Modernist Literature',
+        'Postcolonial Literature',
+        'American Literature',
+        'Victorian Literature',
+      ],
+    },
+  ],
   workExperience: [
     {
       type: 'Teacher Assistant',

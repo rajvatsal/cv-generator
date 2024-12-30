@@ -24,6 +24,19 @@ export function Previewer({ details }) {
           })}
         </ul>
       </section>
+      <section className="previewer__section--core-qualifications">
+        <h2>Core Qualifications</h2>
+        <ul>
+          {details.coreQualifications.map(({ id, data, isVisible }) => {
+            if (isVisible === false) return null
+            return (
+              <li key={id}>
+                <p>{data}</p>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
     </div>
   )
 }
