@@ -1,7 +1,7 @@
 export function PersonalDetails({ updateDetails }) {
   return (
     <div className="main__controls_personal-details">
-      <h2>Personal Details #</h2>
+      <h2>Personal Detail #</h2>
       <div className="input-container">
         <input
           className="input-container__input"

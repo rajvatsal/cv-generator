@@ -1,24 +1,32 @@
 import { PersonalDetails } from '../../PersonalDetails/PersonalDetails.jsx'
-import {
-  CareerObjectives,
-  CoreQualifications,
-  Education,
-} from './ControlSections.jsx'
+import sections from './ControlSections.jsx'
+
+const getClassName = (word) =>
+  word
+    .split('')
+    .map((ch, i) => (ch === ch.toUpperCase() && i !== 0 ? `-${ch}` : ch))
+    .join('')
+    .toLowerCase()
+
+const getSections = (details, updateDetails) => {
+  const cmps = []
+  for (const section in sections) {
+    const Cmp = sections[section]
+    cmps.push(
+      <Cmp
+        className={`main__controls__${getClassName(section)}`}
+        {...{ details, updateDetails }}
+      />
+    )
+  }
+  return cmps
+}
 
 export function Controls({ details, updateDetails }) {
   return (
     <div>
       <PersonalDetails updateDetails={updateDetails} />
-      <CareerObjectives
-        className="main__controls__career-objectives"
-        details={details}
-        updateDetails={updateDetails}
-      />
-      <CoreQualifications
-        className="main__controls__core-qualifications"
-        details={details}
-        updateDetails={updateDetails}
-      />
+      {getSections(details, updateDetails)}
     </div>
   )
 }

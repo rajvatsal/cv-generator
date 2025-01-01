@@ -168,6 +168,12 @@ small,
   }
 }
 
+.checkbox-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* 
  * Input Styles
  */

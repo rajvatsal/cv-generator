@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, createContext, useContext } from 'react'
 import { Previewer } from './previewer.jsx'
 import { Controls } from './controls.jsx'
 
@@ -22,7 +22,7 @@ const details = {
     },
     {
       id: 2,
-      data: 'Critical analysis',
+      data: 'Effective Communication',
       isVisible: true,
     },
     {
@@ -43,26 +43,28 @@ const details = {
   ],
   education: [
     {
+      id: 1,
+      isVisible: true,
       degree: 'Bachelor of Arts',
-      finished: false,
-      date: 'June 2024',
+      date: `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
       subject: 'English Literature',
       address: 'Georgia State University, Atalanta, GA',
       gpa: 3.9,
       extras: [
-        ['minor in creative writing'],
-        ['english literature student club'],
-        [
-          'study abroad program',
-          `"Victorian London's Underworld"- (Spring 2019)`,
-        ],
+        { id: 1, bold: 'minor in creative writing', light: '' },
+        { id: 2, bold: 'english literature student club', light: '' },
+        {
+          id: 3,
+          bold: 'study abroad program',
+          light: `"Victorian London's Underworld"- (Spring 2019)`,
+        },
       ],
       relevantCourseWork: [
-        'Shakespearean Studies',
-        'Modernist Literature',
-        'Postcolonial Literature',
-        'American Literature',
-        'Victorian Literature',
+        { id: 1, data: 'Shakespearean Studies' },
+        { id: 2, data: 'Modernist Literature' },
+        { id: 3, data: 'Postcolonial Literature' },
+        { id: 4, data: 'American Literature' },
+        { id: 5, data: 'Victorian Literature' },
       ],
     },
   ],

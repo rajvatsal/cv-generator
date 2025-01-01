@@ -1,3 +1,26 @@
+function defaultAddFn() {
+  const { listItems, stateName, updateFn, defaultValues } = this
+  const updatedData = listItems.slice()
+  const newData =
+    listItems.length === 0
+      ? defaultValues[stateName]
+      : Object.assign({}, defaultValues[stateName], {
+          id: listItems[listItems.length - 1].id + 1,
+        })
+  updatedData.push(Object.assign({}, defaultValues, newData))
+  updateFn({ [stateName]: updatedData })
+}
+function defaultCheckboxFn(e) {
+  const updatedData = this.listItems.map((dataItem) =>
+    dataItem.id === this.id
+      ? Object.assign({}, dataItem, {
+          isVisible: e.target.checked,
+        })
+      : dataItem
+  )
+  this.updateFn({ [this.stateName]: updatedData })
+}
+
 export function ControlSection({
   stateName,
   listItems,
@@ -5,6 +28,10 @@ export function ControlSection({
   bemClassName,
   updateFn,
   inputs,
+  getLabel,
+  addFn = defaultAddFn,
+  checkboxFn = defaultCheckboxFn,
+  defaultValues = {},
 }) {
   return (
     <div>
@@ -37,7 +64,8 @@ export function ControlSection({
         </form>
       </dialog>
       <ol>
-        {listItems.map(({ id, data }) => {
+        {listItems.map((section) => {
+          const { id } = section
           return (
             <li key={id}>
               <div className="checkbox-list strikethrough-checkbox-label--ps_before">
@@ -46,16 +74,12 @@ export function ControlSection({
                   className="switchbox"
                   role="switch"
                   aria-checked="true"
-                  onChange={(e) => {
-                    const updatedData = listItems.map((objective) =>
-                      objective.id === id
-                        ? Object.assign({}, objective, {
-                            isVisible: e.target.checked,
-                          })
-                        : objective
-                    )
-                    updateFn({ [stateName]: updatedData })
-                  }}
+                  onChange={checkboxFn.bind({
+                    listItems,
+                    id,
+                    stateName,
+                    updateFn,
+                  })}
                   defaultChecked
                 />
                 <button
@@ -78,7 +102,7 @@ export function ControlSection({
                     className="icn-container--fade-in__icn"
                     aria-hidden="true"
                   />
-                  {`${data.slice(0, 30)}...`}
+                  {getLabel(section)}
                 </button>
               </div>
             </li>
@@ -86,17 +110,14 @@ export function ControlSection({
         })}
       </ol>
       <button
-        className="main__controls__${bemClassName}__add-btn btn--primary-2"
+        className="Localemain__controls__${bemClassName}__add-btn btn--primary-2"
         type="button"
-        onClick={() => {
-          const updatedData = listItems.slice()
-          updatedData.push({
-            id: updatedData[updatedData.length - 1].id + 1,
-            data: 'new objective',
-            isVisible: true,
-          })
-          updateFn({ [stateName]: updatedData })
-        }}
+        onClick={addFn.bind({
+          defaultValues,
+          listItems,
+          updateFn,
+          stateName,
+        })}
       >
         Add
       </button>
