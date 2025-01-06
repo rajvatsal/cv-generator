@@ -64,26 +64,28 @@ export function Previewer({ details }) {
                   <b>GPA: {ed.gpa}</b>
                 </p>
                 <ul>
-                  {ed.extras.map((ext) => (
-                    <li key={ext.id}>
-                      <b>{ext.bold}</b>
-                      {ext.light === '' ? null : <span>: {ext.light}</span>}
-                    </li>
-                  ))}
+                  {ed.extras.map((ext) => {
+                    if (ext.isVisible === false) return null
+                    return (
+                      <li key={ext.id}>
+                        <b>{ext.bold}</b>
+                        {ext.light === '' ? null : <span>: {ext.light}</span>}
+                      </li>
+                    )
+                  })}
                 </ul>
 
-                {ed.relevantCourseWork.length !== 0 ? (
-                  <>
-                    <b>Relevant CourseWork</b>
-                    <ul>
-                      {ed.relevantCourseWork.map((rc) => (
-                        <li key={rc.id}>
-                          <p>{rc.data}</p>
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                ) : null}
+                <b>Relevant CourseWork</b>
+                <ul>
+                  {ed.relevantCourseWork.map((rc) => {
+                    if (rc.isVisible === false) return null
+                    return (
+                      <li key={rc.id}>
+                        <p>{rc.data}</p>
+                      </li>
+                    )
+                  })}
+                </ul>
               </li>
             )
           })}

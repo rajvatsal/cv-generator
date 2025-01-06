@@ -3,13 +3,17 @@ import { defaultValues } from './defaultDetails.js'
 import { ControlSection } from '../../ControlSection/ControlSection.jsx'
 import { Input } from '../../Input/Input.jsx'
 
+const fallbackLabel = 'Empty :('
+const checkInvalidLabel = (l) => !l.split(' ').find((s) => s !== '')
+
 function CareerObjectives({ details, updateDetails }) {
   const listItems = details.careerObjectives
   const bemClassName = 'career-objective'
   const stateName = 'careerObjectives'
   const headingName = 'Career Objective'
   const updateFn = updateDetails
-  const getLabelText = (data) => data.data
+  const getLabel = ({ data }) =>
+    checkInvalidLabel(data) ? fallbackLabel : `${data.slice(0, 30)}...`
 
   const inputs = (
     <>
@@ -42,7 +46,7 @@ function CareerObjectives({ details, updateDetails }) {
         headingName,
         updateFn,
         inputs,
-        getLabelText,
+        getLabel,
         defaultValues,
       }}
     />
@@ -54,8 +58,11 @@ function CoreQualifications({ details, updateDetails }) {
   const stateName = 'coreQualifications'
   const headingName = 'Core Qualification'
   const updateFn = updateDetails
-  const getLabelText = (data) => data.data
-
+  const getLabel = ({ data }) => {
+    return checkInvalidLabel(data)
+      ? fallbackLabel
+      : `${data.slice(0, 30)}${data.length > 30 ? '...' : ''}`
+  }
   const inputs = (
     <>
       <input
@@ -84,57 +91,8 @@ function CoreQualifications({ details, updateDetails }) {
         headingName,
         updateFn,
         inputs,
-        getLabelText,
+        getLabel,
         defaultValues,
-      }}
-    />
-  )
-}
-
-function ExtrasInputs({ id, updateFn, stateName, listItems }) {
-  return (
-    <>
-      <Input
-        placeholder="Bold Text"
-        label="bold"
-        name="extras_bold"
-        onChange={(e) => {
-          const extras = listItems.map((ext) =>
-            ext.id !== id
-              ? ext
-              : Object.assign({}, ext, { bold: e.target.value })
-          )
-          updateFn(Object.assign({}, { [stateName]: extras }))
-        }}
-      />
-      <Input
-        placeholder="Light Text"
-        label="light"
-        name="extras_light"
-        onChange={(e) => {
-          const extras = listItems.map((ext) =>
-            ext.id !== id
-              ? ext
-              : Object.assign({}, ext, { light: e.target.value })
-          )
-          updateFn(Object.assign({}, { [stateName]: extras }))
-        }}
-      />
-    </>
-  )
-}
-
-function RelevantCourseWorkInputs({ id, updateFn, stateName, listItems }) {
-  return (
-    <Input
-      placeholder="Light Text"
-      label="light"
-      name="extras_light"
-      onChange={(e) => {
-        const relevantCourseWork = listItems.map((ext) =>
-          ext.id !== id ? ext : Object.assign({}, ext, { data: e.target.value })
-        )
-        updateFn(Object.assign({}, { [stateName]: relevantCourseWork }))
       }}
     />
   )
@@ -152,21 +110,18 @@ function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
           (ed) => ed.id.toString() === dialog.getAttribute('data-id').toString()
         )
 
-  const edUpdateFn = (updatedEd) =>
-    updateFn({
-      [stateName]: listItems.map((ed) =>
-        ed.id === activeEducation.id ? Object.assign({}, ed, updatedEd) : ed
-      ),
-    })
-
   const extras = activeEducation ? activeEducation.extras : null
   const relevantCourseWork = activeEducation
     ? activeEducation.relevantCourseWork
     : null
 
   function changeFn(e) {
+    const id = document
+      .querySelector(`.dialog--${bemClassName}`)
+      .getAttribute('data-id')
+
     const updatedData = listItems.map((ed) => {
-      if (ed.id.toString() !== activeEducation.id.toString()) return ed
+      if (ed.id.toString() !== id.toString()) return ed
       return Object.assign({}, ed, {
         [this.state]: this.getValue ? this.getValue(e) : e.target.value,
       })
@@ -175,20 +130,49 @@ function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
   }
 
   function addFn() {
-    const { defaultValues, stateName, updateFn, listItems } = this
+    const { updateFn, defaultValues } = this
 
-    const nestedFormData = listItems.slice()
+    const nestedFormData = this.listItems.slice()
     const newData =
-      listItems.length === 0
-        ? defaultValues[stateName][0]
-        : Object.assign({}, defaultValues[stateName][0], {
-            id: listItems[listItems.length - 1].id + 1,
+      this.listItems.length === 0
+        ? defaultValues[this.stateName][0]
+        : Object.assign({}, defaultValues[this.stateName][0], {
+            id: this.listItems[this.listItems.length - 1].id + 1,
           })
 
     nestedFormData.push(newData)
 
-    updateFn({ [stateName]: nestedFormData })
+    const updatedParentData = listItems.slice().map((ed) => {
+      if (ed.id.toString() !== activeEducation.id.toString()) return ed
+
+      return Object.assign({}, ed, { [this.stateName]: nestedFormData })
+    })
+
+    updateFn({ [stateName]: updatedParentData })
   }
+
+  function checkboxFn(e) {
+    const updatedData = this.listItems.map((dataItem) =>
+      dataItem.id === this.id
+        ? Object.assign({}, dataItem, {
+            isVisible: e.target.checked,
+          })
+        : dataItem
+    )
+
+    const updatedParent = listItems.map((ed) => {
+      if (ed.id !== activeEducation.id) return ed
+      return Object.assign({}, ed, { [this.stateName]: updatedData })
+    })
+
+    console.log('checkbox', updatedData)
+    this.updateFn({ [stateName]: updatedParent })
+  }
+
+  const extrasInputs = (
+    <input type="text" name="extras_heading" />
+    <input type="text" name="extras_optional" />
+  )
 
   return (
     <>
@@ -233,28 +217,34 @@ function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
       />
       {extras && (
         <ControlSection
+          checkboxFn={checkboxFn}
           addFn={addFn}
           listItems={extras}
           stateName="extras"
           headingName="Extras"
           bemClassName="extras"
-          updateFn={edUpdateFn}
-          getLabelText={(data) => data.bold}
-          Inputs={ExtrasInputs}
+          updateFn={updateFn}
+          getLabel={({ bold }) =>
+            checkInvalidLabel(bold) ? fallbackLabel : bold
+          }
+          inputs=<h1>nein</h1>
           sectionType="section--nested"
           defaultValues={defaultValues.education}
         />
       )}
       {relevantCourseWork && (
         <ControlSection
+          checkboxFn={checkboxFn}
           addFn={addFn}
           listItems={relevantCourseWork}
           stateName="relevantCourseWork"
           headingName="Relevant Course Work"
           bemClassName="relevant-course-work"
-          updateFn={edUpdateFn}
-          getLabelText={(data) => data.data}
-          Inputs={RelevantCourseWorkInputs}
+          updateFn={updateFn}
+          getLabel={({ data }) =>
+            checkInvalidLabel(data) ? fallbackLabel : data
+          }
+          inputs=<h1>ja</h1>
           sectionType="section--nested"
           defaultValues={defaultValues.education}
           nestedParentId={dialog.getAttribute('data-id')}
@@ -270,7 +260,10 @@ function Education({ updateDetails, details }) {
   const stateName = 'education'
   const headingName = 'Education'
   const updateFn = updateDetails
-  const getLabelText = (data) => data.degree
+  const getLabel = ({ degree }) =>
+    checkInvalidLabel(degree)
+      ? fallbackLabel
+      : `${degree.slice(0, 30)}${degree.length > 30 ? '...' : ''}`
 
   function addFn() {
     const updatedData = listItems.slice()
@@ -292,7 +285,7 @@ function Education({ updateDetails, details }) {
         headingName,
         updateFn,
         Inputs: EdInputs,
-        getLabelText,
+        getLabel,
         addFn,
       }}
     />
