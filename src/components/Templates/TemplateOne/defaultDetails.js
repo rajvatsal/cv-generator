@@ -24,8 +24,8 @@ export const defaultValues =  {
       subject: 'Computer Science',
       address: 'Georgia State University, Atalanta, GA',
       gpa: 7,
-      extras: [{ id: 1, bold: 'minor in creative writing', light: '' ,isVisible: true}] ,
-      relevantCourseWork: [{ id: 1, data: 'Shakespearean Studies' , isVisible: true} ],
+      extras: { id: 1, bold: 'minor in creative writing', light: '' ,isVisible: true} ,
+      relevantCourseWork: { id: 1, data: 'Shakespearean Studies' , isVisible: true} ,
     },
   
   workExperience: [

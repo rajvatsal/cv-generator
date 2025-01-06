@@ -174,22 +174,6 @@ function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
     updateFn({ [stateName]: updatedData })
   }
 
-  function addFn() {
-    const { defaultValues, stateName, updateFn, listItems } = this
-
-    const nestedFormData = listItems.slice()
-    const newData =
-      listItems.length === 0
-        ? defaultValues[stateName][0]
-        : Object.assign({}, defaultValues[stateName][0], {
-            id: listItems[listItems.length - 1].id + 1,
-          })
-
-    nestedFormData.push(newData)
-
-    updateFn({ [stateName]: nestedFormData })
-  }
-
   return (
     <>
       <label className="label-hoz">
@@ -233,7 +217,6 @@ function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
       />
       {extras && (
         <ControlSection
-          addFn={addFn}
           listItems={extras}
           stateName="extras"
           headingName="Extras"
@@ -247,7 +230,6 @@ function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
       )}
       {relevantCourseWork && (
         <ControlSection
-          addFn={addFn}
           listItems={relevantCourseWork}
           stateName="relevantCourseWork"
           headingName="Relevant Course Work"
