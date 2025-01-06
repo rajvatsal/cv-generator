@@ -133,13 +133,12 @@ export function ControlSection({
   Inputs,
   inputs = null,
   addFn = defaultAddFn,
+  checkboxFn = defaultCheckboxFn,
   defaultValues = {},
   sectionType = 'section--primary',
 }) {
   const [editingItem, setEditingItem] = useState(null)
   const updateEditingItem = (id = null) => setEditingItem(id)
-
-  const checkboxFn = defaultCheckboxFn
 
   return (
     <div>
