@@ -48,8 +48,8 @@ export function Previewer({ details }) {
               <li key={ed.id}>
                 <p className="main__preview__education__date">
                   {isAfter(new Date(), ed.date)
-                    ? 'COMPLETED IN'
-                    : 'EXPECTED IN'}{' '}
+                    ? 'COMPLETED IN '
+                    : 'EXPECTED IN '}
                   {format(ed.date, 'MMMM y').toUpperCase()}
                 </p>
 
@@ -82,6 +82,40 @@ export function Previewer({ details }) {
                     return (
                       <li key={rc.id}>
                         <p>{rc.data}</p>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+      <section className="previewer__section--work-experience">
+        <h2>Work Experience #</h2>
+        <ul>
+          {details.workExperience.map((we) => {
+            return (
+              <li key={we.id}>
+                <p className="previewer__work-experience__date">
+                  <span className="previewer__work-experience__date--start">
+                    {`${format(we.startDate, 'MMMM y').toUpperCase()}-`}
+                  </span>
+                  <span className="previewer__work-experience__date--end">
+                    {!isAfter(new Date(), we.endDate)
+                      ? 'CURRENT'
+                      : format(we.endDate, 'MMMM y').toUpperCase()}
+                  </span>
+                </p>
+                <div>
+                  <b>{we.type}</b>|<span>{we.uni}</span>|
+                  <span>{we.location}</span>
+                </div>
+                <ul>
+                  {we.responsibilities.map((resp) => {
+                    return (
+                      <li key={resp.id}>
+                        <p>{resp.data}</p>
                       </li>
                     )
                   })}
