@@ -28,12 +28,16 @@ export const defaultValues =  {
       relevantCourseWork: { id: 1, data: 'Shakespearean Studies' , isVisible: true} ,
     },
   
-  workExperience: [
+  workExperience: 
+  
     {
       id: 1,
-      type: 'Teacher Assistant',
-      uni: 'Georgia State University',
+      startDate: new Date(),
+      endDate: new Date(),
+      jobTitle: 'Teacher Assistant',
+      workPlace: 'Georgia State University',
       location: 'Atlanta, GA',
+      responsibilities: {id: 1, data: 'blah', isVisible: true},
     },
-  ],
+  
 }

@@ -36,6 +36,7 @@ function PrimaryForm({
   stateName,
   Inputs,
   inputs,
+  id,
 }) {
   return (
     <dialog className={`dialog--${bemClassName}`}>
@@ -49,6 +50,7 @@ function PrimaryForm({
               listItems,
               updateFn,
               stateName,
+              id,
             }}
           />
         )}
@@ -156,6 +158,7 @@ export function ControlSection({
             updateFn,
             Inputs,
             inputs,
+            id: editingItem,
           }}
         />
       ) : null}

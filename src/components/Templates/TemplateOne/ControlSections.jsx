@@ -1,7 +1,7 @@
 import { useContext, createContext } from 'react'
 import { defaultValues } from './defaultDetails.js'
 import { ControlSection } from '../../ControlSection/ControlSection.jsx'
-import { Input } from '../../Input/Input.jsx'
+import { Input, Textarea } from '../../Input/Input.jsx'
 
 function CareerObjectives({ details, updateDetails }) {
   const listItems = details.careerObjectives
@@ -13,11 +13,10 @@ function CareerObjectives({ details, updateDetails }) {
 
   const inputs = (
     <>
-      <textarea
+      <Textarea
         className={`dialog--${bemClassName}__textarea`}
         name={bemClassName}
-        rows="5"
-        cols="33"
+        extras={{ rows: '5', cols: '33' }}
         onChange={(e) => {
           const dialog = document.querySelector(`.dialog--${bemClassName}`)
           const listId = dialog.getAttribute('data-id')
@@ -127,9 +126,9 @@ function ExtrasInputs({ id, updateFn, stateName, listItems }) {
 function RelevantCourseWorkInputs({ id, updateFn, stateName, listItems }) {
   return (
     <Input
-      placeholder="Light Text"
-      label="light"
-      name="extras_light"
+      placeholder="Relevant Coursework"
+      label="Relevant Coursework"
+      name="relevantCourseWork"
       onChange={(e) => {
         const relevantCourseWork = listItems.map((ext) =>
           ext.id !== id ? ext : Object.assign({}, ext, { data: e.target.value })
@@ -140,17 +139,10 @@ function RelevantCourseWorkInputs({ id, updateFn, stateName, listItems }) {
   )
 }
 
-function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
+function EdInputs({ id, bemClassName, listItems, updateFn, stateName }) {
   const dialog = document.querySelector(`.dialog--${bemClassName}`)
 
-  const activeEducation =
-    dialog === null ||
-    dialog.getAttribute('data-id') === null ||
-    listItems.length === 0
-      ? null
-      : listItems.find(
-          (ed) => ed.id.toString() === dialog.getAttribute('data-id').toString()
-        )
+  const activeEducation = listItems.find((item) => item.id === id)
 
   const edUpdateFn = (updatedEd) =>
     updateFn({
@@ -166,7 +158,7 @@ function EdInputs({ bemClassName, listItems, updateFn, stateName }) {
 
   function changeFn(e) {
     const updatedData = listItems.map((ed) => {
-      if (ed.id.toString() !== activeEducation.id.toString()) return ed
+      if (ed !== activeEducation.id) return ed
       return Object.assign({}, ed, {
         [this.state]: this.getValue ? this.getValue(e) : e.target.value,
       })
@@ -256,10 +248,19 @@ function Education({ updateDetails, details }) {
 
   function addFn() {
     const updatedData = listItems.slice()
+    const defaults = defaultValues[stateName]
+    const extras = [defaults.extras]
+    const relevantCourseWork = [defaults.relevantCourseWork]
     updatedData.push(
-      Object.assign({}, defaultValues[stateName], {
-        id: listItems.length === 0 ? 1 : listItems[listItems.length - 1].id + 1,
-      })
+      Object.assign(
+        {},
+        defaults,
+        {
+          id:
+            listItems.length === 0 ? 1 : listItems[listItems.length - 1].id + 1,
+        },
+        { extras, relevantCourseWork }
+      )
     )
 
     updateFn({ education: updatedData })
@@ -276,9 +277,170 @@ function Education({ updateDetails, details }) {
         Inputs: EdInputs,
         getLabelText,
         addFn,
+        defaultValues,
       }}
     />
   )
 }
 
-export default { CareerObjectives, CoreQualifications, Education }
+function ResponsibilitiesInputs({ listItems, updateFn, stateName, id }) {
+  return (
+    <Textarea
+      placeholder="Explain your responsibilities there"
+      name="responsibility"
+      label="Responsibility"
+      extras={{
+        rows: 5,
+        cols: 33,
+      }}
+      onChange={(e) => {
+        const updatedData = {
+          [stateName]: listItems.map((item) =>
+            item.id === id
+              ? Object.assign({}, item, { data: e.target.value })
+              : item
+          ),
+        }
+        updateFn(updatedData)
+      }}
+    />
+  )
+}
+
+function WorkExperienceInputs({ listItems, id, updateFn, stateName }) {
+  const activeWorkExperience = id
+    ? listItems.find((item) => item.id === id)
+    : null
+
+  const responsibilities = activeWorkExperience
+    ? activeWorkExperience.responsibilities
+    : null
+
+  const weUpdateFn = (updatedData) =>
+    updateFn({
+      [stateName]: listItems.map((item) => {
+        if (item.id !== id) return item
+        return Object.assign({}, item, updatedData)
+      }),
+    })
+
+  function changeFn(e) {
+    updateFn({
+      [stateName]: listItems.map((item) => {
+        return item.id !== activeWorkExperience.id
+          ? item
+          : Object.assign({}, item, { [this.state]: e.target.value })
+      }),
+    })
+  }
+
+  return (
+    <>
+      <div>
+        <h3>Dates #</h3>
+        <label className="label-hoz">
+          Start
+          <input
+            type="date"
+            name="start_date"
+            className="input--date"
+            onChange={changeFn.bind({ state: 'startDate' })}
+          />
+        </label>
+        <label className="label-hoz">
+          End
+          <input
+            type="date"
+            name="start_date"
+            className="input--date"
+            onChange={changeFn.bind({ state: 'endDate' })}
+          />
+        </label>
+      </div>
+      <Input
+        placeholder="Job Title"
+        label="Job Title"
+        name="job_title"
+        onChange={changeFn.bind({ state: 'jobTitle' })}
+      />
+      <Input
+        placeholder="Work Place"
+        label="Work Place"
+        name="work_place"
+        onChange={changeFn.bind({ state: 'workPlace' })}
+      />
+      <Input
+        placeholder="Location"
+        label="Location"
+        name="location"
+        onChange={changeFn.bind({ state: 'location' })}
+      />
+      {responsibilities && (
+        <ControlSection
+          stateName="responsibilities"
+          Inputs={ResponsibilitiesInputs}
+          listItems={responsibilities}
+          headingName="Work Experience"
+          bemClassName="work-experience"
+          getLabelText={(data) => data.data}
+          sectionType="section--nested"
+          defaultValues={defaultValues.workExperience}
+          updateFn={weUpdateFn}
+        />
+      )}
+    </>
+  )
+}
+
+function WorkExperience({ updateDetails, details }) {
+  const listItems = details.workExperience
+  const bemClassName = 'work-experience'
+  const stateName = 'workExperience'
+  const headingName = 'Work Experience'
+  const getLabelText = (data) => data.jobTitle
+  const updateFn = updateDetails
+
+  function addFn() {
+    const { listItems, stateName, updateFn, defaultValues } = this
+
+    const updatedData = listItems.slice()
+    const defaults = defaultValues[stateName]
+    const responsibilities = [defaults.responsibilities]
+    updatedData.push(
+      Object.assign(
+        {},
+        defaults,
+        {
+          id:
+            listItems.length === 0 ? 1 : listItems[listItems.length - 1].id + 1,
+        },
+        { responsibilities }
+      )
+    )
+
+    updateFn({ workExperience: updatedData })
+  }
+
+  return (
+    <ControlSection
+      {...{
+        listItems,
+        addFn,
+        bemClassName,
+        stateName,
+        headingName,
+        getLabelText,
+        updateFn,
+        Inputs: WorkExperienceInputs,
+        defaultValues,
+      }}
+    />
+  )
+}
+
+export default {
+  CareerObjectives,
+  CoreQualifications,
+  Education,
+  WorkExperience,
+}

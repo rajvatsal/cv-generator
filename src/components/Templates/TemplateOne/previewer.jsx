@@ -95,6 +95,7 @@ export function Previewer({ details }) {
         <h2>Work Experience #</h2>
         <ul>
           {details.workExperience.map((we) => {
+            if (we.isVisible === false) return null
             return (
               <li key={we.id}>
                 <p className="previewer__work-experience__date">
@@ -108,11 +109,12 @@ export function Previewer({ details }) {
                   </span>
                 </p>
                 <div>
-                  <b>{we.type}</b>|<span>{we.uni}</span>|
+                  <b>{we.jobTitle}</b>|<span>{we.workPlace}</span>|
                   <span>{we.location}</span>
                 </div>
                 <ul>
                   {we.responsibilities.map((resp) => {
+                    if (resp.isVisible === false) return null
                     return (
                       <li key={resp.id}>
                         <p>{resp.data}</p>

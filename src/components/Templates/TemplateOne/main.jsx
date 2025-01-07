@@ -84,21 +84,25 @@ const details = {
       id: 1,
       startDate: `${new Date().getFullYear() - 1}-${new Date().getMonth() + 1}-${new Date().getDate()}`,
       endDate: `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDate()}`,
-      type: 'Teacher Assistant',
-      uni: 'Georgia State University',
+      jobTitle: 'Teacher Assistant',
+      workPlace: 'Georgia State University',
       location: 'Atlanta, GA',
+      isVisible: true,
       responsibilities: [
         {
           id: 1,
           data: 'Assist students during office hours, providing guidance thatcontributed to a 10% increase in overall class participation',
+          isVisible: true,
         },
         {
           id: 2,
           data: 'Collaborate with the professor to develop innovative lesson plans,resulting in a 25% increase in student engagement',
+          isVisible: true,
         },
         {
           id: 3,
           data: 'Organize and lead study sessions, contributing to a 90% pass rate inthe final exam among participating students',
+          isVisible: true,
         },
       ],
     },
