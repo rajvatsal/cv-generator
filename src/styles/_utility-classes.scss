@@ -5,6 +5,7 @@ h4,
 h5,
 h6 {
   font-family: var(--ff-secondary-400);
+  font-weight: normal;
 }
 
 h1,
@@ -69,6 +70,34 @@ small,
   .icon {
     color: inherit;
     margin-inline: 2px;
+  }
+}
+
+.case-up {
+  text-transform: uppercase;
+}
+
+/*
+ * Download Button
+ */
+
+.btn--download {
+  padding: 0 !important;
+
+  &__title {
+    padding-block: var(--sp-400) !important;
+    padding-inline: var(--sp-400);
+    font-size: var(--fs-300);
+  }
+
+  &__icon {
+    aspect-ratio: 1 / 1;
+    min-width: var(--icn-size-200);
+    border-left: solid 1px;
+    border-color: inherit;
+    padding-inline: var(--sp-300);
+    box-sizing: content-box;
+    align-self: stretch;
   }
 }
 

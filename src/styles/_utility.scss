@@ -21,11 +21,11 @@ $ff-source_sans-ExtraLight: 'source_sans_proextralight', sans-serif;
 $ff-spacemono-Regular: 'space_monoregular', monospace;
 $ff-spacemono-Bold: 'space_monobold', monospace;
 
-$dark-blue: oklch(20.94% 0.0133 204.69);
-$green: oklch(89.5% 0.20970256696719095 144.2306789218844);
-$red: oklch(44.99% 0.1366 21.88);
-$orange: oklch(82.05% 0.1633 85.99);
-$purple: oklch(58.1% 0.0765 346.24);
+$dark-blue: c.to-space(oklch(20.94% 0.0133 204.69), hsl);
+$green: c.to-space(oklch(89.5% 0.20970256696719095 144.2306789218844), hsl);
+$red: c.to-space(oklch(44.99% 0.1366 21.88), hsl);
+$orange: c.to-space(oklch(82.05% 0.1633 85.99), hsl);
+$purple: c.to-space(oklch(58.1% 0.0765 346.24), hsl);
 
 $primary: $dark-blue;
 $accent: $purple;
@@ -93,6 +93,8 @@ $warning: $orange;
 
   --ff-primary-300: #{$ff-inter-Light};
   --ff-primary-400: #{$ff-inter-Regular};
+  --ff-primary-500: #{$ff-inter-Medium};
+  --ff-primary-600: #{$ff-inter-SemiBold};
   --ff-primary-700: #{$ff-inter-Bold};
   --ff-secondary-400: #{$ff-spacemono-Regular};
   --ff-secondary-700: #{$ff-spacemono-Bold};

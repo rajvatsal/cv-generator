@@ -2,19 +2,32 @@ import { isAfter, format } from 'date-fns'
 import './template.scss'
 
 export function Previewer({ details }) {
+  let phoneNumber = details.phoneNumber.split(' ')
+  // console.log(phoneNumber)
+  phoneNumber = `(${phoneNumber[0]}) ${phoneNumber[1]}`
   return (
-    <div>
+    <div className="previewer">
       <section className="previewer__section--intro">
-        <h2 className="previewer__name case-up">{details.name}</h2>
-        <span className="previewer__address case-up">{details.address}</span>
-        <span className="previewer__phone-number case-up">
-          {details.phoneNumber}
-        </span>
-        <span className="previewer__email case-up">{details.email}</span>
+        <h2 className="previewer__section--intro__name case-up">
+          {details.name}
+        </h2>
+        <div className="previewer__section--intro__personal-info">
+          <span className="previewer__section--intro__address case-up">
+            {details.address}
+          </span>
+          <span className="previewer__section--intro__phone-number case-up">
+            {phoneNumber}
+          </span>
+          <span className="previewer__section--intro__email case-up">
+            {details.email}
+          </span>
+        </div>
       </section>
       <section className="previewer__section--career-objectives">
-        <h2>Career Objectives</h2>
-        <ul>
+        <h3 className="previewer__section--career-objectives__heading">
+          Career Objectives
+        </h3>
+        <ul className="previewer__section--career-objectives__data list--no-style">
           {details.careerObjectives.map(({ id, data, isVisible }) => {
             if (isVisible === false) return null
             return (
@@ -26,8 +39,10 @@ export function Previewer({ details }) {
         </ul>
       </section>
       <section className="previewer__section--core-qualifications">
-        <h2>Core Qualifications</h2>
-        <ul>
+        <h3 className="previewer__section--core-qualifications__heading list--no-style">
+          Core Qualifications
+        </h3>
+        <ul className="previewer__section--core-qualifications__data list--no-style">
           {details.coreQualifications.map(({ id, data, isVisible }) => {
             if (isVisible === false) return null
             return (
@@ -40,8 +55,8 @@ export function Previewer({ details }) {
       </section>
 
       <section className="previewer__section--education">
-        <h2>Education</h2>
-        <ul>
+        <h3 className=">previewer__section--education__heading">Education</h3>
+        <ul className=">previewer__section--education__data list--no-style">
           {details.education.map((ed) => {
             if (ed.isVisible === false) return null
             return (
@@ -92,8 +107,10 @@ export function Previewer({ details }) {
         </ul>
       </section>
       <section className="previewer__section--work-experience">
-        <h2>Work Experience #</h2>
-        <ul>
+        <h3 className="previewer__section--work-experience__heading">
+          Work Experience
+        </h3>
+        <ul className="previewer__section--work-experience__data list--no-style">
           {details.workExperience.map((we) => {
             if (we.isVisible === false) return null
             return (

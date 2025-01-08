@@ -5,7 +5,7 @@ import { Controls } from './controls.jsx'
 const details = {
   name: 'chiara allison',
   address: 'atlanta, ga 30310',
-  phoneNumber: '(555)-555-5555',
+  phoneNumber: '+1 555-555-5555',
   email: 'example@example.com',
   careerObjectives: [
     {

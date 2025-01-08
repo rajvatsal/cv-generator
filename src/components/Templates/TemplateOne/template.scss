@@ -1,5 +1,46 @@
-.main__previewer {
-  & span {
-    margin-right: var(--sp-200);
+.previewer {
+  --ff-heading-500: var(--ff-primary-500);
+  --ff-heading-600: var(--ff-primary-600);
+  --ff-heading-700: var(--ff-primary-700);
+
+  --clr-main-400: var(--clr-primary-200);
+
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-transform: uppercase;
+  }
+
+  &__section--intro {
+    border-bottom: solid 8px;
+    border-color: var(--clr-main-400);
+    padding-bottom: var(--sp-300);
+
+    & span:not(&__address) {
+      margin-right: var(--sp-200);
+    }
+
+    &__name {
+      font-family: var(--ff-heading-700);
+      transform: scaleY(1.2);
+    }
+
+    &__address,
+    &__phone-number,
+    &__email {
+      font-family: var(--ff-heading-300);
+      font-size: calc(var(--fs-base) - 0.125rem);
+      color: var(--clr-neutral-400);
+    }
+
+    &__personal-info {
+      padding-block: var(--sp-200);
+    }
+  }
+
+  & > ::last-child {
+    padding-bottom: 10px;
   }
 }
