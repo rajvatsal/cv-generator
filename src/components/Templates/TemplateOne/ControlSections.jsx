@@ -158,11 +158,12 @@ function EdInputs({ id, bemClassName, listItems, updateFn, stateName }) {
 
   function changeFn(e) {
     const updatedData = listItems.map((ed) => {
-      if (ed !== activeEducation.id) return ed
+      if (ed.id !== activeEducation.id) return ed
       return Object.assign({}, ed, {
         [this.state]: this.getValue ? this.getValue(e) : e.target.value,
       })
     })
+
     updateFn({ [stateName]: updatedData })
   }
 

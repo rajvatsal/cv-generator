@@ -55,6 +55,11 @@ small,
   align-items: center;
 }
 
+.list--no-style {
+  padding-left: 0;
+  list-style-type: none;
+}
+
 .icons {
   display: inline-block;
   color: var(--clr-neutral-900);
