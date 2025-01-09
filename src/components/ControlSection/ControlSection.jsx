@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import './ControlSection.scss'
 
 function NestedForm({
   bemClassName,
@@ -10,7 +11,7 @@ function NestedForm({
   id,
 }) {
   return (
-    <div className={`nested-inputs--${bemClassName}`}>
+    <div className={`nested-inputs--${bemClassName} nested-form`}>
       {inputs !== null ? (
         inputs
       ) : (
@@ -18,7 +19,7 @@ function NestedForm({
       )}
       <button
         type="button"
-        className="btn--accent"
+        className="btn--accent nested-form__btn--remove"
         onClick={() =>
           updateFn({ [stateName]: listItems.filter((item) => item.id !== id) })
         }
@@ -39,7 +40,7 @@ function PrimaryForm({
   id,
 }) {
   return (
-    <dialog className={`dialog--${bemClassName}`}>
+    <dialog className={`dialog--${bemClassName} primary-form`}>
       <form method="dialog" action="#">
         {inputs !== null ? (
           inputs
@@ -54,28 +55,30 @@ function PrimaryForm({
             }}
           />
         )}
-        <button
-          type="button"
-          className={`dialog--${bemClassName}__remove-btn btn--accent-light`}
-          onClick={() => {
-            const dialog = document.querySelector(`.dialog--${bemClassName}`)
-            const id = dialog.getAttribute('data-id')
+        <div className="primary-form__button-container">
+          <button
+            type="button"
+            className={`dialog--${bemClassName}__remove-btn btn--accent-light primary-form__btn--remove primary-form__btn`}
+            onClick={() => {
+              const dialog = document.querySelector(`.dialog--${bemClassName}`)
+              const id = dialog.getAttribute('data-id')
 
-            const updatedData = listItems.filter(
-              (obj) => obj.id.toString() !== id
-            )
-            updateFn({ [stateName]: updatedData })
-            dialog.close()
-          }}
-        >
-          Remove
-        </button>
-        <button
-          type="submit"
-          className={`dialog--${bemClassName}__close btn--secondary`}
-        >
-          Close
-        </button>
+              const updatedData = listItems.filter(
+                (obj) => obj.id.toString() !== id
+              )
+              updateFn({ [stateName]: updatedData })
+              dialog.close()
+            }}
+          >
+            Remove
+          </button>
+          <button
+            type="submit"
+            className={`dialog--${bemClassName}__close btn--secondary primary-form__btn--close primary-form__btn`}
+          >
+            Close
+          </button>
+        </div>
       </form>
     </dialog>
   )
@@ -143,11 +146,11 @@ export function ControlSection({
   const updateEditingItem = (id = null) => setEditingItem(id)
 
   return (
-    <div>
+    <div className="control-section">
       {sectionType === 'section--nested' ? (
-        <h4>{headingName} #</h4>
+        <h4 className="main__controls__control-heading">{headingName} #</h4>
       ) : (
-        <h2>{headingName} #</h2>
+        <h2 className="main__controls__control-heading">{headingName} #</h2>
       )}
       {sectionType === 'section--primary' ? (
         <PrimaryForm
@@ -162,7 +165,7 @@ export function ControlSection({
           }}
         />
       ) : null}
-      <ol>
+      <ol className="list--no-style control-section__input-container">
         {listItems.map((section) => {
           const editFn =
             sectionType === 'section--primary'
@@ -227,7 +230,7 @@ export function ControlSection({
         })}
       </ol>
       <button
-        className="Localemain__controls__${bemClassName}__add-btn btn--primary-2"
+        className="Localemain__controls__${bemClassName}__add-btn btn--add btn--primary-2 icons-container"
         type="button"
         onClick={addFn.bind({
           defaultValues,
@@ -237,7 +240,35 @@ export function ControlSection({
           editingItem,
         })}
       >
-        Add
+        <div className="btn--add__icn-container">
+          <div className=" btn--add__icn--default btn--add__icn-container__icon-div">
+            <svg
+              className="icon"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+            >
+              <title>Add icon not hover</title>
+              <path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
+            </svg>
+          </div>
+          <div className="btn--add__icn--hover btn--add__icn-container__icon-div">
+            <svg
+              className="icon "
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 16 16"
+              fill="currentColor"
+            >
+              <title>Add icon hover</title>
+              <path
+                fillRule="evenodd"
+                d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14Zm.75-10.25v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5a.75.75 0 0 1 1.5 0Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </div>
+        </div>
+        <span className="btn--add__text">Add</span>
       </button>
     </div>
   )
