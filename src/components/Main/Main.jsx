@@ -33,17 +33,17 @@ export function Main() {
               '.previewer__section--intro__name'
             )
             const opts = {
-              margin: [10, 10, 10, 10],
+              margin: [1.58, 2],
               filename: `${name.textContent}.pdf`,
               image: { type: 'png' },
               html2canvas: {
-                scale: window.devicePixelRatio * 2,
+                scale: 5,
               },
               jsPDF: {
-                unit: 'mm',
+                unit: 'cm',
                 format: 'a4',
+                putOnlyUsedFonts: true,
                 orientation: 'portrait',
-                autoPage: 'text',
               },
             }
 

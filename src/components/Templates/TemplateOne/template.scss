@@ -1,19 +1,37 @@
+@use 'sass:color';
 @use '../../../styles/layouts';
+@use '../../../styles/utility';
 
 .previewer {
   --ff-heading-500: var(--ff-primary-500);
   --ff-heading-600: var(--ff-primary-600);
   --ff-heading-700: var(--ff-primary-700);
+  --ff-txt-300: var(--ff-primary-300);
   --ff-txt-400: var(--ff-primary-400);
   --ff-txt-500: var(--ff-primary-500);
   --ff-txt-600: var(--ff-primary-600);
   --ff-txt-700: var(--ff-primary-700);
 
-  --clr-main-400: var(--clr-primary-200);
+  --clr-main-400: #{color.to-space(utility.$primary-200, hsl)};
+
+  --fs-txt: 11px;
+  --fs-heading: 12px;
+  --fs-main-heading: calc(var(--fs-700) + 0.3rem);
+
+  &__data {
+    & * {
+      font-size: var(--fs-txt);
+    }
+  }
+
+  > * {
+    line-height: 1.4;
+  }
 
   &__heading {
     font-family: var(--ff-heading-600);
-    font-size: var(--fs-base);
+    font-size: var(--fs-heading);
+    letter-spacing: -0.2px;
   }
 
   &__bold {
@@ -36,25 +54,28 @@
 
     &__name {
       font-family: var(--ff-heading-700);
-      transform: scaleY(1.2);
+      font-size: var(--fs-main-heading);
+      letter-spacing: -1px;
+      transform: scaleY(1.1);
+      line-height: 1;
     }
 
     &__address,
     &__phone-number,
     &__email {
       font-family: var(--ff-heading-300);
-      font-size: calc(var(--fs-base) - 0.125rem);
+      font-size: var(--fs-txt);
       color: var(--clr-neutral-400);
     }
 
     &__personal-info {
-      margin-block: var(--sp-300) var(--sp-400);
+      line-height: 3rem;
     }
   }
 
   &__section:not(&__section--intro) {
     margin-bottom: var(--sp-200);
-    @include layouts.gridLayout(0, 0, 3, (1, 1), (2, 1));
+    @include layouts.gridLayout(0, 0, 7, (2, 1), (5, 1));
   }
 
   &__section--career-objectives {
@@ -87,5 +108,13 @@
   h5,
   h6 {
     text-transform: uppercase;
+  }
+}
+
+.main__controls {
+  .input-fields-container {
+    &__section--date {
+      margin-bottom: var(--sp-300);
+    }
   }
 }

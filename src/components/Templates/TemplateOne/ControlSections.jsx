@@ -13,9 +13,12 @@ function CareerObjectives({ details, updateDetails }) {
 
   const inputs = (
     <>
+      <h4 className="main__controls__control-heading">Goal #</h4>
       <Textarea
         className={`dialog--${bemClassName}__textarea`}
         name={bemClassName}
+        label="Goal"
+        placeholder="Describe your career goal"
         extras={{ rows: '5', cols: '33' }}
         onChange={(e) => {
           const dialog = document.querySelector(`.dialog--${bemClassName}`)
@@ -56,9 +59,11 @@ function CoreQualifications({ details, updateDetails }) {
   const getLabelText = (data) => data.data
 
   const inputs = (
-    <>
-      <input
-        type="text"
+    <div className="input-fields-container">
+      <h4 className="main__controls__control-heading">Qualification #</h4>
+      <Input
+        placeholder="Quailification"
+        label="Quailification"
         onChange={(e) => {
           const dialog = document.querySelector(`.dialog--${bemClassName}`)
           const id = dialog.getAttribute('data-id')
@@ -71,7 +76,7 @@ function CoreQualifications({ details, updateDetails }) {
           updateFn({ [stateName]: updatedData })
         }}
       />
-    </>
+    </div>
   )
 
   return (
@@ -92,7 +97,7 @@ function CoreQualifications({ details, updateDetails }) {
 
 function ExtrasInputs({ id, updateFn, stateName, listItems }) {
   return (
-    <>
+    <div className="input-fields-container">
       <Input
         placeholder="Bold Text"
         label="bold"
@@ -119,7 +124,7 @@ function ExtrasInputs({ id, updateFn, stateName, listItems }) {
           updateFn(Object.assign({}, { [stateName]: extras }))
         }}
       />
-    </>
+    </div>
   )
 }
 
@@ -168,16 +173,17 @@ function EdInputs({ id, bemClassName, listItems, updateFn, stateName }) {
   }
 
   return (
-    <>
-      <label className="label-hoz">
-        Date
+    <div className="input-fields-container">
+      <div className="input-fields-container__section--date input-fields-container__section">
+        <h4 className="main__controls__control-heading">Date #</h4>
         <input
           type="date"
           name="degree start or end date"
           className="input--date"
           onChange={changeFn.bind({ state: 'date' })}
         />
-      </label>
+      </div>
+      <h4 className="main__controls__control-heading">About #</h4>
       <Input
         placeholder="Degree"
         label="Degree"
@@ -235,7 +241,7 @@ function EdInputs({ id, bemClassName, listItems, updateFn, stateName }) {
           nestedParentId={dialog.getAttribute('data-id')}
         />
       )}
-    </>
+    </div>
   )
 }
 
@@ -336,28 +342,24 @@ function WorkExperienceInputs({ listItems, id, updateFn, stateName }) {
   }
 
   return (
-    <>
-      <div>
-        <h3>Dates #</h3>
-        <label className="label-hoz">
-          Start
-          <input
-            type="date"
-            name="start_date"
-            className="input--date"
-            onChange={changeFn.bind({ state: 'startDate' })}
-          />
-        </label>
-        <label className="label-hoz">
-          End
-          <input
-            type="date"
-            name="start_date"
-            className="input--date"
-            onChange={changeFn.bind({ state: 'endDate' })}
-          />
-        </label>
+    <div className="input-fields-container">
+      <div className="container-input--date">
+        <h4 className="main__controls__control-heading">Date #</h4>
+        <input
+          type="date"
+          name="start_date"
+          className="input--date"
+          onChange={changeFn.bind({ state: 'startDate' })}
+        />
+        <span>--</span>
+        <input
+          type="date"
+          name="start_date"
+          className="input--date"
+          onChange={changeFn.bind({ state: 'endDate' })}
+        />
       </div>
+      <h4 className="main__controls__control-heading">About #</h4>
       <Input
         placeholder="Job Title"
         label="Job Title"
@@ -389,7 +391,7 @@ function WorkExperienceInputs({ listItems, id, updateFn, stateName }) {
           updateFn={weUpdateFn}
         />
       )}
-    </>
+    </div>
   )
 }
 

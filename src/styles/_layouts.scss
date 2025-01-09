@@ -1,6 +1,6 @@
 @use 'sass:list' as l;
 
-@mixin grid($row-gap: var(--sp-100), $col-gap: var(--sp-100)) {
+@mixin grid($col-gap, $row-gap) {
   @supports (grid-area: auto) {
     display: grid;
     grid-column-gap: $row-gap;

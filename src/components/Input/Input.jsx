@@ -1,3 +1,5 @@
+import './Input.scss'
+
 export function Textarea({
   label = 'Enter something',
   name = 'nm',

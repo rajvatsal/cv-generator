@@ -214,12 +214,13 @@ small,
   }
 }
 
-.container-input--date {
-  margin-bottom: var(--sp-300);
-
-  > span {
-    margin-inline: var(--sp-100);
-  }
+.input--date-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: var(--sp-200);
+  color: var(--clr-neutral-600);
+  font-size: var(--fs-200);
 }
 
 /*

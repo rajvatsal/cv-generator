@@ -1,17 +1,17 @@
 .template-container {
-  --input-width: 3rem;
+  --input-width: calc(var(--icn-size-400) - 0.185rem);
   --input-height: var(--input-width);
   --border-radius: 5px;
 
   --icn-width: calc(50 / 100 * var(--input-width));
   --icn-height: var(--icn-width);
 
-  --clr-icon--checked: #111a1b;
-  --clr-icon--unchecked: grey;
-  --clr-border: #111a1b;
-  --clr-outline: #111a1b;
-  --bg--unchecked: #e8eaed;
-  --bg--checked: steelblue;
+  --clr-icon--checked: var(--clr-accent-400);
+  --clr-icon--unchecked: var(--clr-neutral-400);
+  --clr-border: var(--clr-accent-400);
+  --clr-outline: var(--clr-accent-400);
+  --bg--unchecked: var(--clr-neutral-200);
+  --bg--checked: var(--clr-accent-300);
 
   --box-shadow: 0;
 
@@ -20,6 +20,9 @@
 
   --td-border: 50ms;
   --td-outline: 50ms;
+
+  display: flex;
+  gap: var(--sp-300);
 
   &__templates {
     appearance: none;
@@ -30,7 +33,6 @@
     border-radius: var(--border-radius);
     display: inline-grid;
     place-items: center;
-    margin-left: 20px;
 
     transition:
       border var(--td-border) ease,

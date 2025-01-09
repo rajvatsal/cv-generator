@@ -24,7 +24,7 @@ const getSections = (details, updateDetails) => {
 
 export function Controls({ details, updateDetails }) {
   return (
-    <div>
+    <div className="main__controls">
       <PersonalDetails updateDetails={updateDetails} />
       {getSections(details, updateDetails)}
     </div>
