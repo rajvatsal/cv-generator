@@ -16,6 +16,8 @@
   &__text {
     margin-left: var(--icn-size-100);
     box-sizing: border-box;
+    color: var(--clr-neutral-400);
+    font-family: var(--ff-secondary-700);
   }
 
   &__icn-container {
@@ -38,6 +40,10 @@
 
   &:hover {
     color: var(--clr-primary-300);
+
+    & .btn--add__text {
+      color: inherit;
+    }
 
     & .btn--add__icn--hover {
       opacity: 1;
