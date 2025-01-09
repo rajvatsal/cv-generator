@@ -26,24 +26,35 @@ $green: oklch(89.5% 0.20970256696719095 144.2306789218844);
 $red: oklch(44.99% 0.1366 21.88);
 $orange: oklch(82.05% 0.1633 85.99);
 $purple: oklch(58.1% 0.0765 346.24);
+$indian-red: c.to-space(#c1666b, oklch);
 
-$primary-200: c.adjust($dark-blue, $lightness: 70%, $space: oklch);
-$primary-300: c.adjust($dark-blue, $lightness: 10%, $space: oklch);
-$primary-400: $dark-blue;
+$clr-primary: $dark-blue;
+$primary-200: c.adjust($clr-primary, $lightness: 70%, $space: oklch);
+$primary-300: c.adjust($clr-primary, $lightness: 10%, $space: oklch);
+$primary-400: $clr-primary;
 
-$accent-300: c.adjust($purple, $lightness: 35%, $space: oklch);
-$accent-400: $purple;
-$accent-500: c.adjust($purple, $lightness: -30%, $space: oklch);
+$clr-accent: $indian-red;
+$accent-300: c.adjust($clr-accent, $lightness: 35%, $space: oklch);
+$accent-400: $clr-accent;
+$accent-500: c.adjust($clr-accent, $lightness: -30%, $space: oklch);
 
-$valid-100: c.adjust($green, $chroma: -30%, $lightness: 10%, $space: oklch);
-$valid-400: $green;
-$valid-500: c.adjust($green, $lightness: -40%, $space: oklch);
+$clr-valid: $green;
+$valid-100: c.adjust($clr-valid, $chroma: -30%, $lightness: 10%, $space: oklch);
+$valid-400: $clr-valid;
+$valid-500: c.adjust($clr-valid, $lightness: -40%, $space: oklch);
 
-$invalid-400: $red;
-$invalid-100: c.adjust($red, $lightness: 70%, $space: oklch);
+$clr-invalid: $red;
+$invalid-400: $clr-invalid;
+$invalid-100: c.adjust($clr-invalid, $lightness: 70%, $space: oklch);
 
-$warning-400: $orange;
-$warning-100: c.adjust($orange, $chroma: -15%, $lightness: 10%, $space: oklch);
+$clr-warning: $orange;
+$warning-400: $clr-warning;
+$warning-100: c.adjust(
+  $clr-warning,
+  $chroma: -15%,
+  $lightness: 10%,
+  $space: oklch
+);
 
 :root {
   /* --------------------------------
