@@ -4,7 +4,6 @@ This app helps you to create your résumé in just a few clicks
 
 Currently three templates available
 
-feat: control component styling
 feat: pdf settings
  - feat: add scale to allow users to set quality of pdf
  - feat: landscape and portrait switch
