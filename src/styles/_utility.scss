@@ -113,7 +113,7 @@ $warning-100: c.adjust(
 
   -------------------------------- */
 
-  --fs-base: 14px;
+  --fs-base: 0.875rem;
   --fs-ratio: 1.18;
   --fs-100: calc(1em / (var(--fs-ratio) * var(--fs-ratio)));
   --fs-200: calc(1em / var(--fs-ratio));
@@ -127,6 +127,8 @@ $warning-100: c.adjust(
     1em * var(--fs-ratio) * var(--fs-ratio) * var(--fs-ratio) * var(--fs-ratio) *
       var(--fs-ratio)
   );
+  --fs-800: calc(1em * pow(var(--fs-ratio), 5));
+  --fs-900: calc(1em * pow(var(--fs-ratio), 6));
 
   /* --------------------------------
 

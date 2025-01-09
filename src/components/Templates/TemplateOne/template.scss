@@ -16,7 +16,7 @@
 
   --fs-txt: 11px;
   --fs-heading: 12px;
-  --fs-main-heading: calc(var(--fs-700) + 0.3rem);
+  --fs-main-heading: calc(var(--fs-900) - 2px);
 
   &__data {
     & * {
