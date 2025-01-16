@@ -1,12 +1,12 @@
 import { isAfter, format } from 'date-fns'
 import './template.scss'
 
-export function Previewer({ details }) {
+export function Previewer({ details, previewClassName }) {
   let phoneNumber = details.phoneNumber.split(' ')
   // console.log(phoneNumber)
   phoneNumber = `(${phoneNumber[0]}) ${phoneNumber[1]}`
   return (
-    <div className="previewer">
+    <div className={`previewer custom-scrollbar ${previewClassName}`}>
       <section className="previewer__section--intro previewer__section">
         <h2 className="previewer__section--intro__name case-up ">
           {details.name}

@@ -32,9 +32,10 @@ function getProgressOffset(percentValue, thumbHeight) {
   return ` + ${(marginPercent / 100) * thumbHeight}`
 }
 
-function rangeInputHandler({ setRangeValue }) {
+function rangeInputHandler({ setRangeValue, onChange }) {
   return (e) => {
     setRangeValue(Number.parseFloat(e.target.value))
+    onChange(e.target.value)
   }
 }
 
@@ -58,7 +59,14 @@ function getDecimalCount(num) {
   return num.toString().split('.')[1].length
 }
 
-function rangeWheelHandler({ min, max, rangeValue, step, setRangeValue }) {
+function rangeWheelHandler({
+  min,
+  max,
+  rangeValue,
+  step,
+  setRangeValue,
+  onChange,
+}) {
   return (e) => {
     e.preventDefault()
 
@@ -69,6 +77,7 @@ function rangeWheelHandler({ min, max, rangeValue, step, setRangeValue }) {
     if (value > max || value < min) return
 
     setRangeValue(value)
+    onChange(value)
   }
 }
 
@@ -79,6 +88,9 @@ export function Range({
   name = 'input_range',
   value = max / 2 + min,
   suffix = '',
+  onChange = () => {
+    console.log('changed')
+  },
 }) {
   const [rangeValue, setRangeValue] = useState(value)
 
@@ -114,6 +126,7 @@ export function Range({
             percentValue,
             setRangeValue,
             rangeValue,
+            onChange,
           })}
           onWheel={rangeWheelHandler({
             rangeValue,
@@ -121,6 +134,7 @@ export function Range({
             max,
             step,
             setRangeValue,
+            onChange,
           })}
         />
         <span className="container--range__progress" style={progressStyle}>

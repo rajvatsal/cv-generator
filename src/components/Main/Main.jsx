@@ -10,6 +10,13 @@ export function Main() {
   const [details, setDetails] = useState(
     templates[Number.parseInt(template) - 1].details
   )
+  const [pdfOrientation, setPdfOrientation] = useState('portrait')
+  const [pdfMargin, setPdfMargin] = useState(2)
+
+  document
+    .querySelector(':root')
+    .style.setProperty('--pdf-margin', `${pdfMargin}cm`)
+  const previewClassName = `previewer--${pdfOrientation.toLowerCase()}`
 
   const { Controls, Previewer } = templates[Number.parseInt(template) - 1]
 
@@ -24,8 +31,13 @@ export function Main() {
 
   return (
     <main className="main">
-      <div className="main__sidebar">
-        <DownloadButton />
+      <div className="main__sidebar custom-scrollbar">
+        <DownloadButton
+          onMarginChange={setPdfMargin}
+          onOrientationChange={setPdfOrientation}
+          pdfOrientation={pdfOrientation}
+          pdfMargin={pdfMargin}
+        />
         <TemplateSelector updateTemplate={updateTemplate} />
         <Controls
           className="main__controls"
@@ -33,7 +45,7 @@ export function Main() {
           details={details}
         />
       </div>
-      <Previewer details={details} />
+      <Previewer details={details} previewClassName={previewClassName} />
     </main>
   )
 }

@@ -94,13 +94,15 @@ const versions = {
     )
   },
 
-  v2: ({ options }) => {
-    const [selectedItem, setSelectedItem] = useState(1)
+  v2: ({ options, onChange, selected }) => {
+    const [selectedItem, setSelectedItem] = useState(selected)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     const updateDropdownState = () => setIsDropdownOpen(!isDropdownOpen)
-    const updateSelectedItem = (index) =>
+    const updateSelectedItem = (index) => {
       setSelectedItem(Number.parseInt(index))
+      onChange(options[Number.parseInt(index)])
+    }
 
     const buttonTextContent = options[selectedItem]
 

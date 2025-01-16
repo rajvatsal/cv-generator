@@ -3,7 +3,7 @@
   --sp-sidebar-primary: var(--sp-500);
 
   display: grid;
-  grid-template: 1fr / minmax(auto, 30%) 1fr;
+  grid-template: 1fr / 30% 1fr;
   padding-inline: calc(var(--pg-pad) + var(--sp-400));
   min-height: 100vh;
 
@@ -23,14 +23,22 @@
     }
   }
 
-  & .previewer {
-    aspect-ratio: 21cm / 29.7cm;
-    width: 21cm;
-    height: 29.7cm;
-    padding: 2cm;
+  & .previewer--portrait,
+  & .previewer--landscape {
+    padding: var(--pdf-margin);
     margin-inline: auto;
     overflow-y: auto;
     box-shadow: 0 0 30px var(--clr-neutral-200);
+    width: max(21cm, 100%);
+  }
+
+  & .previewer--portrait {
+    aspect-ratio: 21/ 29.7;
+    width: 21cm;
+  }
+
+  & .previewer--landscape {
+    aspect-ratio: 29.7 / 21;
   }
 
   &__controls {

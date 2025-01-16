@@ -39,9 +39,17 @@ function downloadButtonClickHandler(togglePdfOptsVisibility) {
   return () => togglePdfOptsVisibility()
 }
 
-function PdfOpts({ isVisible, toggleVisibility }) {
+function PdfOpts({
+  isVisible,
+  toggleVisibility,
+  onOrientationChange,
+  onMarginChange,
+  pdfOrientation,
+  pdfMargin,
+}) {
   if (!isVisible) return null
 
+  const selectOpts = ['Landscape', 'Portrait']
   return (
     <form action="#" method="post" className="pdf-options">
       <div className="pdf-options__section--quality pdf-options__section">
@@ -54,11 +62,25 @@ function PdfOpts({ isVisible, toggleVisibility }) {
         <h2 className="heading--v2">
           Margin <i>(Recommended 2cm)</i>
         </h2>
-        <Range max={5} step={0.1} name="pdf_margin" value={2} suffix="cm" />
+        <Range
+          max={5}
+          step={0.1}
+          name="pdf_margin"
+          value={pdfMargin}
+          suffix="cm"
+          onChange={onMarginChange}
+        />
       </div>
       <div className="pdf-options__section--orientation pdf-options__section">
         <h2 className="heading--v2">Orientation</h2>
-        <Select options={['Landscape', 'Portrait']} version="v2" />
+        <Select
+          options={selectOpts}
+          version="v2"
+          onChange={onOrientationChange}
+          selected={selectOpts.findIndex(
+            (item) => item.toLowerCase() === pdfOrientation.toLowerCase()
+          )}
+        />
       </div>
       <div className="pdf-options__section--buttons pdf-options__section">
         <button
@@ -83,7 +105,12 @@ function PdfOpts({ isVisible, toggleVisibility }) {
   )
 }
 
-export function DownloadButton() {
+export function DownloadButton({
+  onOrientationChange,
+  onMarginChange,
+  pdfMargin,
+  pdfOrientation,
+}) {
   const [pdfOptsVisibility, setPdfOptsVisibility] = useState(false)
   const togglePdfOptsVisibility = () => setPdfOptsVisibility(!pdfOptsVisibility)
 
@@ -92,6 +119,7 @@ export function DownloadButton() {
       <PdfOpts
         isVisible={pdfOptsVisibility}
         toggleVisibility={togglePdfOptsVisibility}
+        {...{ onOrientationChange, onMarginChange, pdfMargin, pdfOrientation }}
       />
       <button
         type="button"
