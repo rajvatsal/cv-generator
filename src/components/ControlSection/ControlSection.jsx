@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import editImg from '/src/assets/edit.svg'
 import './ControlSection.scss'
 
 function NestedForm({
@@ -203,7 +204,7 @@ export function ControlSection({
                   })}
                 >
                   <img
-                    src="/assets/edit.svg"
+                    src={editImg}
                     alt=""
                     className="icn-container--fade-in__icn"
                     aria-hidden="true"
