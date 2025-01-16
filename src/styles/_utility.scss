@@ -1,8 +1,8 @@
 @use 'sass:color' as c;
 
-@import url('../assets/inter-webfont/stylesheet.css');
-@import url('../assets/spacemono-webfont/web-fonts/spacemono-main.css');
-@import url('../assets/source-sans-pro-webfont/stylesheet.css');
+@import url('/src/assets/inter-webfont/stylesheet.css');
+@import url('/src/assets/spacemono-webfont/web-fonts/spacemono-main.css');
+@import url('/src/assets/source-sans-pro-webfont/stylesheet.css');
 
 $ff-inter-Regular: 'Inter-Regular', sans-serif;
 $ff-inter-Bold: 'Inter-Bold', sans-serif;
@@ -126,8 +126,8 @@ $warning-100: c.adjust(
     1em * var(--fs-ratio) * var(--fs-ratio) * var(--fs-ratio) * var(--fs-ratio)
   );
   --fs-700: calc(
-    1em * var(--fs-ratio) * var(--fs-ratio) * var(--fs-ratio) * var(--fs-ratio) *
-      var(--fs-ratio)
+    1em * var(--fs-ratio) * var(--fs-ratio) * var(--fs-ratio) *
+      var(--fs-ratio) * var(--fs-ratio)
   );
   --fs-800: calc(1em * pow(var(--fs-ratio), 5));
   --fs-900: calc(1em * pow(var(--fs-ratio), 6));
