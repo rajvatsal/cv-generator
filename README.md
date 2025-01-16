@@ -7,6 +7,8 @@ Partially complete
 ### Further Imporvements
 - Add 2nd and 3rd template
 - Customizable fonts and colors
+- Use normal form instead of a modal
+- Add remove button on the main page instead of the modal
 - Responsiveness
 - Fix list markers not showing up in the correct spot
 - Fix console errors
