@@ -12,6 +12,7 @@
     padding-bottom: var(--pg-pad);
     border-right: solid 1px var(--clr-neutral-500);
     margin-right: var(--pg-pad);
+    position: relative;
 
     & > *:first-child {
       margin-top: var(--sp-main--top);

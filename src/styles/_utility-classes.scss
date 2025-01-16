@@ -1,3 +1,7 @@
+/*
+ * Basic semantic html
+ */
+
 h1,
 h2,
 h3,
@@ -55,10 +59,18 @@ small,
   align-items: center;
 }
 
+/*
+ * No list style
+ */
+
 .list--no-style {
   padding-left: 0;
   list-style-type: none;
 }
+
+/*
+ * Icons
+ */
 
 .icons {
   display: inline-block;
@@ -78,33 +90,17 @@ small,
   }
 }
 
+/*
+ * Case
+ */
+
 .case-up {
   text-transform: uppercase;
 }
 
 /*
- * Download Button
+ * Buttons
  */
-
-.btn--download {
-  padding: 0 !important;
-
-  &__title {
-    padding-block: var(--sp-400) !important;
-    padding-inline: var(--sp-400);
-    font-size: var(--fs-300);
-  }
-
-  &__icon {
-    aspect-ratio: 1 / 1;
-    min-width: var(--icn-size-200);
-    border-left: solid 1px;
-    border-color: inherit;
-    padding-inline: var(--sp-300);
-    box-sizing: content-box;
-    align-self: stretch;
-  }
-}
 
 .btn {
   display: inline-flex;
@@ -201,6 +197,10 @@ small,
     border: 0;
   }
 }
+
+/*
+ * Date
+ */
 
 .input--date {
   font-family: var(--ff-secondary-400);
@@ -353,4 +353,38 @@ small,
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.heading--v2 {
+  font-family: var(--ff-primary-700);
+  font-size: var(--fs-100);
+  letter-spacing: 0;
+  color: var(--clr-neutral-400);
+  margin-bottom: var(--sp-200);
+  text-transform: uppercase;
+}
+
+/*
+ * Scrollbar
+ */
+@supports selector(::-webkit-scrollbar) {
+  .custom-scrollbar {
+    &::-webkit-scrollbar {
+      width: 0.4rem;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 25px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 25px;
+
+      &:active {
+        background: black;
+      }
+    }
+  }
 }

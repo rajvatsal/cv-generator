@@ -1,0 +1,38 @@
+/*
+ * Download Button
+ */
+
+.btn--download {
+  padding: 0 !important;
+
+  &__title {
+    padding-block: var(--sp-400) !important;
+    padding-inline: var(--sp-400);
+    font-size: var(--fs-300);
+  }
+
+  &__icon {
+    aspect-ratio: 1 / 1;
+    min-width: var(--icn-size-200);
+    border-left: solid 1px;
+    border-color: inherit;
+    padding-inline: var(--sp-300);
+    box-sizing: content-box;
+    align-self: stretch;
+  }
+}
+
+.pdf-options {
+  position: absolute;
+  inset: 0 0 0 -10px;
+  z-index: 1000;
+  background-color: var(--clr-neutral-100);
+
+  &__section {
+    margin-top: var(--sp-300);
+  }
+
+  &__section--buttons > button {
+    margin-right: var(--sp-200);
+  }
+}
