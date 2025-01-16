@@ -203,7 +203,7 @@ export function ControlSection({
                   })}
                 >
                   <img
-                    src="/src/assets/edit.svg"
+                    src="/assets/edit.svg"
                     alt=""
                     className="icn-container--fade-in__icn"
                     aria-hidden="true"
