@@ -6,5 +6,7 @@ Partially complete
 
 ### Further Imporvements
 - Add 2nd and 3rd template
+- Customizable fonts and colors
 - Responsiveness
 - Fix list markers not showing up in the correct spot
+- Fix console errors
