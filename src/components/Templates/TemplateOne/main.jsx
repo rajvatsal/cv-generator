@@ -1,6 +1,6 @@
 import { useState, createContext, useContext } from 'react'
-import { Previewer } from './previewer.jsx'
-import { Controls } from './controls.jsx'
+import { Previewer } from './Preview.jsx'
+import { Controls } from './Controls.jsx'
 
 const details = {
   name: 'chiara allison',

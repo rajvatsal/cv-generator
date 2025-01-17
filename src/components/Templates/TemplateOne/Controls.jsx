@@ -1,3 +1,4 @@
+import { PersonalDetails } from '../../PersonalDetails/PersonalDetails.jsx'
 import { useContext, createContext } from 'react'
 import { defaultValues } from './defaultDetails.js'
 import { ControlSection } from '../../ControlSection/ControlSection.jsx'
@@ -441,9 +442,14 @@ function WorkExperience({ updateDetails, details }) {
   )
 }
 
-export default {
-  CareerObjectives,
-  CoreQualifications,
-  Education,
-  WorkExperience,
+export function Controls({ details, updateDetails }) {
+  return (
+    <div className="main__controls">
+      <PersonalDetails updateDetails={updateDetails} />
+      <CareerObjectives {...{ details, updateDetails }} />,
+      <CoreQualifications {...{ details, updateDetails }} />,
+      <Education {...{ details, updateDetails }} />,
+      <WorkExperience {...{ details, updateDetails }} />,
+    </div>
+  )
 }
