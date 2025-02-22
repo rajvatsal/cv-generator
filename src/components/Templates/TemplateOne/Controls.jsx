@@ -446,10 +446,10 @@ export function Controls({ details, updateDetails }) {
   return (
     <div className="main__controls">
       <PersonalDetails updateDetails={updateDetails} />
-      <CareerObjectives {...{ details, updateDetails }} />,
-      <CoreQualifications {...{ details, updateDetails }} />,
-      <Education {...{ details, updateDetails }} />,
-      <WorkExperience {...{ details, updateDetails }} />,
+      <CareerObjectives {...{ details, updateDetails }} />
+      <CoreQualifications {...{ details, updateDetails }} />
+      <Education {...{ details, updateDetails }} />
+      <WorkExperience {...{ details, updateDetails }} />
     </div>
   )
 }
