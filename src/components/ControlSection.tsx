@@ -99,8 +99,8 @@ function defaultAddFn() {
     listItems.length === 0
       ? defaultValues[stateName]
       : Object.assign({}, defaultValues[stateName], {
-          id: listItems[listItems.length - 1].id + 1,
-        })
+        id: listItems[listItems.length - 1].id + 1,
+      })
 
   updatedData.push(Object.assign({}, newData))
   updateFn({ [stateName]: updatedData })
@@ -111,8 +111,8 @@ function defaultCheckboxFn(e) {
   const updatedData = listItems.map((dataItem) =>
     dataItem.id === id
       ? Object.assign({}, dataItem, {
-          isVisible: e.target.checked,
-        })
+        isVisible: e.target.checked,
+      })
       : dataItem
   )
 
@@ -129,7 +129,7 @@ const getLabel = (text) =>
       ? text
       : `${text.slice(0, MAX_LABEL_LENGTH)}...`
 
-export function ControlSection({
+function ControlSection({
   stateName,
   listItems,
   headingName,
@@ -171,9 +171,9 @@ export function ControlSection({
           const editFn =
             sectionType === 'section--primary'
               ? () => {
-                  updateEditingItem(id)
-                  showDialog.call({ bemClassName, id })
-                }
+                updateEditingItem(id)
+                showDialog.call({ bemClassName, id })
+              }
               : () => updateEditingItem(id === editingItem ? null : id)
 
           const { id } = section
@@ -274,3 +274,5 @@ export function ControlSection({
     </div>
   )
 }
+
+export default ControlSection

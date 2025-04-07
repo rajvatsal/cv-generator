@@ -1,6 +1,6 @@
 @use 'sass:color';
-@use '../../../styles/layouts';
-@use '../../../styles/utility';
+@use '../../styles/layouts';
+@use '../../styles/utility';
 
 .previewer {
   --ff-heading-500: var(--ff-primary-500);

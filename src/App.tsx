@@ -1,7 +1,6 @@
 import './App.scss'
-
-import { Header } from './components/Header/Header.jsx'
-import { Main } from './components/Main/Main.jsx'
+import Header from './components/Header.tsx'
+import Main from './components/Main.tsx'
 
 function App() {
   return (

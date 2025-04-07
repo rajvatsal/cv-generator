@@ -1,4 +1,4 @@
-export function PersonalDetails({ updateDetails }) {
+function PersonalDetails({ updateDetails }) {
   return (
     <div className="main__controls_personal-details input-fields-container">
       <h2 className="main__controls__control-heading">Personal Detail #</h2>
@@ -119,3 +119,5 @@ export function PersonalDetails({ updateDetails }) {
     </div>
   )
 }
+
+export default PersonalDetails

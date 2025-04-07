@@ -1,26 +1,46 @@
-import html2pdf from 'html2pdf.js'
 import './DownloadButton.scss'
-import { useState } from 'react'
-import { Range } from '../Input-Range/Range.jsx'
-import { Select } from '../Input-Select/Select.jsx'
+import { SetStateAction, useState } from 'react'
+import { Range } from './generals/Range.tsx'
+import { Select } from './generals/Select.tsx'
+import { OrientationPdf } from './Main.tsx'
+// add types to this package
+import html2pdf from 'html2pdf.js'
+
+interface DownloadBtnProps {
+  pdfMargin: number
+  pdfOrientation: OrientationPdf
+  onOrientationChange: React.Dispatch<SetStateAction<number>>
+  onMarginChange: React.Dispatch<SetStateAction<number>>
+}
+
+interface PdfOptsProps {
+  isVisible: boolean
+  pdfMargin: number
+  pdfOrientation: OrientationPdf
+  toggleVisibility: () => void
+  onOrientationChange: React.Dispatch<SetStateAction<number>>
+  onMarginChange: React.Dispatch<SetStateAction<number>>
+}
 
 async function downloadPdf() {
   const marginOffset = 0.48
   const preview = document.querySelector('.previewer')
   const name = document.querySelector('.previewer__section--intro__name')
   const scale = Number.parseFloat(
-    document.querySelector("[name='pdf_quality']").value
+    (document.querySelector("[name='pdf_quality']") as HTMLInputElement).value
   )
   const margin = Number.parseFloat(
-    document.querySelector("[name='pdf_margin']").value
+    (document.querySelector("[name='pdf_margin']") as HTMLInputElement).value
   )
-  const orientation = document.querySelector(
-    '.pdf-options__section--orientation #dropdown-button'
+  const orientation = (
+    document.querySelector(
+      '.pdf-options__section--orientation #dropdown-button'
+    ) as HTMLButtonElement
   ).textContent
 
   const opts = {
     margin: [margin - marginOffset, margin],
-    filename: `${name.textContent}.pdf`,
+    filename: `${name ? name.textContent : 'name'}.pdf`,
     image: { type: 'png' },
     html2canvas: {
       scale: scale,
@@ -35,18 +55,18 @@ async function downloadPdf() {
   await html2pdf().from(preview).set(opts).save()
 }
 
-function downloadButtonClickHandler(togglePdfOptsVisibility) {
+function downloadButtonClickHandler(togglePdfOptsVisibility: () => void) {
   return () => togglePdfOptsVisibility()
 }
 
 function PdfOpts({
   isVisible,
+  pdfOrientation,
+  pdfMargin,
   toggleVisibility,
   onOrientationChange,
   onMarginChange,
-  pdfOrientation,
-  pdfMargin,
-}) {
+}: PdfOptsProps) {
   if (!isVisible) return null
 
   const selectOpts = ['Landscape', 'Portrait']
@@ -76,9 +96,19 @@ function PdfOpts({
         <Select
           options={selectOpts}
           version="v2"
-          onChange={onOrientationChange}
+          onChange={(e: string) => {
+            onOrientationChange(
+              e === 'Portrait'
+                ? OrientationPdf.Portrait
+                : OrientationPdf.Landscpe
+            )
+          }}
           selected={selectOpts.findIndex(
-            (item) => item.toLowerCase() === pdfOrientation.toLowerCase()
+            (item) =>
+              item.toLowerCase() ===
+              (pdfOrientation === OrientationPdf.Portrait
+                ? 'portrait'
+                : 'landscape')
           )}
         />
       </div>
@@ -105,14 +135,16 @@ function PdfOpts({
   )
 }
 
-export function DownloadButton({
+function DownloadButton({
   onOrientationChange,
   onMarginChange,
   pdfMargin,
   pdfOrientation,
-}) {
-  const [pdfOptsVisibility, setPdfOptsVisibility] = useState(false)
-  const togglePdfOptsVisibility = () => setPdfOptsVisibility(!pdfOptsVisibility)
+}: DownloadBtnProps) {
+  const [pdfOptsVisibility, setPdfOptsVisibility] = useState<boolean>(false)
+  const togglePdfOptsVisibility = () => {
+    setPdfOptsVisibility(!pdfOptsVisibility)
+  }
 
   return (
     <>
@@ -144,3 +176,5 @@ export function DownloadButton({
     </>
   )
 }
+
+export default DownloadButton

@@ -1,5 +1,15 @@
-import { useState } from 'react'
+import { SetStateAction, useState } from 'react'
 import './Range.scss'
+
+interface RangeProps {
+  min: number
+  max: number
+  step: number
+  value: number
+  name: string
+  suffix: string
+  onChange: React.Dispatch<SetStateAction<number>> | (() => void)
+}
 
 const primaryColor = getCssVars(
   document.documentElement,
@@ -81,7 +91,7 @@ function rangeWheelHandler({
   }
 }
 
-export function Range({
+function Range({
   min = 0,
   max = 100,
   step = 1,
@@ -91,7 +101,7 @@ export function Range({
   onChange = () => {
     console.log('changed')
   },
-}) {
+}: Partial<RangeProps>) {
   const [rangeValue, setRangeValue] = useState(value)
 
   const mult = 100 / (max - min)
@@ -144,3 +154,5 @@ export function Range({
     </>
   )
 }
+
+export { Range }
