@@ -1,183 +1,145 @@
 import { useState } from 'react'
 import './Select.scss'
 
-const versions = {
-  v1: ({ options }) => {
-    const [selectedItem, setSelectedItem] = useState(-1)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+interface SelectProps {
+  options: string[]
+  selected: number
+  version: string
+  onChange: (selectOption: string) => void
+}
 
-    const updateDropdownState = () => setIsDropdownOpen(!isDropdownOpen)
-    const updateSelectedItem = (index) =>
-      setSelectedItem(Number.parseInt(index))
+function V1({ options }: { options: string[] }) {
+  const [selectedItem, setSelectedItem] = useState(-1)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-    const buttonTextContent =
-      selectedItem === -1 ? 'Orientation' : options[selectedItem]
+  const updateDropdownState = () => setIsDropdownOpen(!isDropdownOpen)
+  const updateSelectedItem = (index: number) => setSelectedItem(index)
 
-    return (
-      <div className="input--select">
-        <button
-          type="button"
-          id="dropdown-button"
-          className="input--select__select-button"
+  return (
+    <div className="input--select">
+      <button
+        type="button"
+        id="dropdown-button"
+        className="input--select__select-button"
+        // biome-ignore lint/a11y/useSemanticElements: <explanation>
+        role="combobox"
+        aria-label="select button"
+        aria-haspopup="listbox"
+        aria-expanded={isDropdownOpen}
+        aria-controls="select-dropdown"
+        onClick={updateDropdownState}
+      >
+        <span className="input--select__select-button__selected-value">
+          {options[selectedItem]}
+        </span>
+        <span className="input--select__select-button__arrow" />
+      </button>
+      {isDropdownOpen === false ? null : (
+        // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
+        <ul
+          id="select-drodown"
+          className="input--select__select-dropdown custom-scrollbar"
+          // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation>
           // biome-ignore lint/a11y/useSemanticElements: <explanation>
-          role="combobox"
-          aria-label="select button"
-          aria-haspopup="listbox"
-          aria-expanded={isDropdownOpen}
-          aria-controls="select-dropdown"
-          onClick={updateDropdownState}
+          role="listbox"
+          aria-labelledby="dropdown-button"
         >
-          <span className="input--select__select-button__selected-value">
-            {buttonTextContent}
-          </span>
-          <span className="input--select__select-button__arrow" />
-        </button>
-        {isDropdownOpen === false ? null : (
-          // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-          <ul
-            id="select-drodown"
-            className="input--select__select-dropdown custom-scrollbar"
-            // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation>
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
-            role="listbox"
-            arialabelledby="dropdown-button"
-          >
-            {options.map((opt, i) => {
-              const listItem =
-                i === selectedItem ? (
-                  // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                  // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-                  // biome-ignore lint/a11y/useSemanticElements: <explanation>
-                  // biome-ignore lint/a11y/useAriaPropsForRole: <explanation>
-                  // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation>
-                  <li className="selected" role="option">
-                    {opt}
-                  </li>
-                ) : (
-                  // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                  // biome-ignore lint/a11y/useSemanticElements: <explanation>
-                  // biome-ignore lint/a11y/useAriaPropsForRole: <explanation>
-                  // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation>
-                  // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-                  <li role="option">{opt}</li>
-                )
-              return (
-                <li
-                  className={`${i === selectedItem ? 'selected' : ''}`}
-                  role="option"
-                  onClick={() => {
-                    updateDropdownState()
-                    updateSelectedItem(i)
-                  }}
-                >
-                  {opt}
-                </li>
-              )
-            })}
-            {/* biome-ignore lint/a11y/useFocusableInteractive: <explanation> */}
-            {/* biome-ignore lint/a11y/useSemanticElements: <explanation> */}
-            {/* biome-ignore lint/a11y/useAriaPropsForRole: <explanation> */}
-            {/* biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation> */}
+          {options.map((opt: string, i: number) => (
             <li
+              className={`${i === selectedItem ? 'selected' : ''}`}
               role="option"
-              data-value="clear"
               onClick={() => {
-                updateSelectedItem(-1)
                 updateDropdownState()
+                updateSelectedItem(i)
               }}
             >
-              <span>Clear Selection</span>
+              {opt}
             </li>
-          </ul>
-        )}
-      </div>
-    )
-  },
-
-  v2: ({ options, onChange, selected }) => {
-    const [selectedItem, setSelectedItem] = useState(selected)
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-
-    const updateDropdownState = () => setIsDropdownOpen(!isDropdownOpen)
-    const updateSelectedItem = (index) => {
-      setSelectedItem(Number.parseInt(index))
-      onChange(options[Number.parseInt(index)])
-    }
-
-    const buttonTextContent = options[selectedItem]
-
-    return (
-      <div className="input--select">
-        <button
-          type="button"
-          id="dropdown-button"
-          className="input--select__select-button"
-          // biome-ignore lint/a11y/useSemanticElements: <explanation>
-          role="combobox"
-          aria-label="select button"
-          aria-haspopup="listbox"
-          aria-expanded={isDropdownOpen}
-          aria-controls="select-dropdown"
-          onClick={updateDropdownState}
-        >
-          <span className="input--select__select-button__selected-value">
-            {buttonTextContent}
-          </span>
-          <span className="input--select__select-button__arrow" />
-        </button>
-        {isDropdownOpen === false ? null : (
-          // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-          <ul
-            id="select-drodown"
-            className="input--select__select-dropdown custom-scrollbar"
-            // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation>
-            // biome-ignore lint/a11y/useSemanticElements: <explanation>
-            role="listbox"
-            arialabelledby="dropdown-button"
+          ))}
+          <li
+            role="option"
+            data-value="clear"
+            onClick={() => {
+              updateSelectedItem(-1)
+              updateDropdownState()
+            }}
           >
-            {options.map((opt, i) => {
-              const listItem =
-                i === selectedItem ? (
-                  // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                  // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-                  // biome-ignore lint/a11y/useSemanticElements: <explanation>
-                  // biome-ignore lint/a11y/useAriaPropsForRole: <explanation>
-                  // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation>
-                  <li className="selected" role="option">
-                    {opt}
-                  </li>
-                ) : (
-                  // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-                  // biome-ignore lint/a11y/useSemanticElements: <explanation>
-                  // biome-ignore lint/a11y/useAriaPropsForRole: <explanation>
-                  // biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: <explanation>
-                  // biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-                  <li role="option">{opt}</li>
-                )
-              return (
-                <li
-                  className={`${i === selectedItem ? 'selected' : ''}`}
-                  role="option"
-                  onClick={() => {
-                    updateDropdownState()
-                    updateSelectedItem(i)
-                  }}
-                >
-                  {opt}
-                </li>
-              )
-            })}
-          </ul>
-        )}
-      </div>
-    )
-  },
+            <span>Clear Selection</span>
+          </li>
+        </ul>
+      )}
+    </div>
+  )
 }
 
-export function Select(props) {
-  const Select = versions[props.version]
+function V2({ options, onChange, selected }: SelectProps) {
+  const [selectedItem, setSelectedItem] = useState<number>(selected)
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
 
-  if (Select === undefined) return null
+  const updateDropdownState = () => setIsDropdownOpen(!isDropdownOpen)
+  const updateSelectedItem = (index: number) => {
+    setSelectedItem(index)
+    onChange(options[index])
+  }
 
-  return <Select {...props} />
+  return (
+    <div className="input--select">
+      <button
+        type="button"
+        id="dropdown-button"
+        className="input--select__select-button"
+        // biome-ignore lint/a11y/useSemanticElements: <explanation>
+        role="combobox"
+        aria-label="select button"
+        aria-haspopup="listbox"
+        aria-expanded={isDropdownOpen}
+        aria-controls="select-dropdown"
+        onClick={updateDropdownState}
+      >
+        <span className="input--select__select-button__selected-value">
+          {options[selected]}
+        </span>
+        <span className="input--select__select-button__arrow" />
+      </button>
+      {isDropdownOpen === false ? null : (
+        <ul
+          id="select-drodown"
+          className="input--select__select-dropdown custom-scrollbar"
+          role="listbox"
+          aria-labelledby="dropdown-button"
+        >
+          {options.map((opt: string, i: number) => (
+            <li
+              className={`${i === selectedItem ? 'selected' : ''}`}
+              role="option"
+              onClick={() => {
+                updateDropdownState()
+                updateSelectedItem(i)
+              }}
+            >
+              {opt}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  )
 }
+
+function Select(props: SelectProps) {
+  let Jsx
+  switch (props.version) {
+    case 'v1':
+      Jsx = <V1 {...props} />
+      break
+    case 'v2':
+      Jsx = <V2 {...props} />
+      break
+    default:
+      Jsx = null
+  }
+
+  return Jsx
+}
+
+export { Select }
