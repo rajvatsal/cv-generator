@@ -60,7 +60,7 @@ function Range({
   onChange = () => {
     console.log(`updated ${name}`)
   },
-}: RangeProps) {
+}: Partial<RangeProps>) {
   const [rangeValue, setRangeValue] = useState<number>(value)
   const percentValue = ((rangeValue - min) / (max - min)) * 100
 

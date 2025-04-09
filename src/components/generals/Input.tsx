@@ -1,6 +1,6 @@
 import './Input.scss'
 
-export function Textarea({
+function Textarea({
   label = 'Enter something',
   name = 'nm',
   onChange = () => console.log('changed'),
@@ -65,3 +65,5 @@ export function Input({
     </div>
   )
 }
+
+export { Textarea }
