@@ -1,8 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import './Range.scss'
-//
-// TODO: Make this shit more easy to read
-//
 
 interface RangeProps {
   min: number
@@ -14,16 +11,7 @@ interface RangeProps {
   onChange: Dispatch<SetStateAction<number>>
 }
 
-interface RangeWheelHandler {
-  min: number
-  max: number
-  step: number
-  rangeValue: number
-  setRangeValue: Dispatch<SetStateAction<number>>
-  onChange: Dispatch<SetStateAction<number>>
-}
-
-const getCssVars = (element: HTMLElement, variable: string) =>
+const getCssVars = (element: HTMLElement, variable: string): string =>
   getComputedStyle(element).getPropertyValue(variable)
 
 const primaryColor = getCssVars(
@@ -44,7 +32,7 @@ const rangeThumbHeight = getCssVars(
   .map((i) => i.replace(/\D/g, ''))
   .join('.')
 
-function getProgressOffset(percentValue: number, thumbHeight: number) {
+function getProgressOffset(percentValue: number, thumbHeight: number): string {
   const isOver = percentValue > 50
   if (isOver) {
     const marginPercent = percentValue - 50
@@ -55,46 +43,12 @@ function getProgressOffset(percentValue: number, thumbHeight: number) {
   return ` + ${(marginPercent / 100) * thumbHeight}`
 }
 
-const rangeInputHandler =
-  ({
-    setRangeValue,
-    onChange,
-  }: {
-    setRangeValue: Dispatch<SetStateAction<number>>
-    onChange: Dispatch<SetStateAction<number>>
-  }): React.ChangeEventHandler<HTMLInputElement> =>
-  (e) => {
-    const val = Number.parseInt(e.target.value)
-    setRangeValue(val)
-    onChange(val)
-  }
-
-const preventScroll = (e: WheelEvent): void => {
+function onWheelHandlerPreventScroll(e: WheelEvent): void {
   e.preventDefault()
 }
-const getDecimalCount = (num: number) => num.toString().split('.')[1].length
 
-function rangeWheelHandler({
-  min,
-  max,
-  step,
-  rangeValue,
-  setRangeValue,
-  onChange,
-}: RangeWheelHandler): React.WheelEventHandler<HTMLInputElement> {
-  return (e) => {
-    e.preventDefault()
-
-    let value = e.deltaY < 0 ? rangeValue + step : rangeValue - step
-
-    value = Number.parseFloat(value.toFixed(getDecimalCount(step)))
-    console.log({ value, step, rangeValue })
-    if (value > max || value < min) return
-
-    setRangeValue(value)
-    onChange(value)
-  }
-}
+const getDecimalCount = (num: number): number =>
+  num.toString().split('.')[1].length
 
 function Range({
   min = 0,
@@ -104,56 +58,59 @@ function Range({
   value = max / 2 + min,
   suffix = '',
   onChange = () => {
-    console.log('updated select input')
+    console.log(`updated ${name}`)
   },
 }: RangeProps) {
-  const [rangeValue, setRangeValue] = useState(value)
-
-  const mult = 100 / (max - min)
-  const percentValue = mult * (rangeValue - min)
-
-  const rangeStyle = {
-    background: `linear-gradient(to right, ${primaryColor}, ${primaryColor} ${percentValue}%, ${accentColor} ${percentValue}%, ${accentColor})`,
-  }
-
-  const progressStyle = {
-    left: `calc(${percentValue}% ${getProgressOffset(percentValue, Number.parseInt(rangeThumbHeight))}rem)`,
-  }
+  const [rangeValue, setRangeValue] = useState<number>(value)
+  const percentValue = ((rangeValue - min) / (max - min)) * 100
 
   return (
     <>
       <div
         className="container--range"
         onMouseOver={() => {
-          window.addEventListener('wheel', preventScroll, { passive: false })
+          window.addEventListener('wheel', onWheelHandlerPreventScroll, {
+            passive: false,
+          })
         }}
         onMouseLeave={() => {
-          window.removeEventListener('wheel', preventScroll)
+          window.removeEventListener('wheel', onWheelHandlerPreventScroll)
         }}
       >
         <input
           type="range"
-          style={rangeStyle}
+          style={{
+            background: `linear-gradient(to right, ${primaryColor}, ${primaryColor} ${percentValue}%, ${accentColor} ${percentValue}%, ${accentColor})`,
+          }}
           min={min}
           max={max}
           step={step}
           name={name}
           value={rangeValue}
           className="container--range__input--range"
-          onChange={rangeInputHandler({
-            setRangeValue,
-            onChange,
-          })}
-          onWheel={rangeWheelHandler({
-            rangeValue,
-            min,
-            max,
-            step,
-            setRangeValue,
-            onChange,
-          })}
+          onChange={(e) => {
+            const val = Number.parseInt(e.target.value)
+            setRangeValue(val)
+            onChange(val)
+          }}
+          onWheel={(e) => {
+            e.preventDefault()
+
+            let value = e.deltaY < 0 ? rangeValue + step : rangeValue - step
+
+            value = Number.parseFloat(value.toFixed(getDecimalCount(step)))
+            if (value > max || value < min) return
+
+            setRangeValue(value)
+            onChange(value)
+          }}
         />
-        <span className="container--range__progress" style={progressStyle}>
+        <span
+          className="container--range__progress"
+          style={{
+            left: `calc(${percentValue}% ${getProgressOffset(percentValue, Number.parseInt(rangeThumbHeight))}rem)`,
+          }}
+        >
           {`${rangeValue} ${suffix}`}
         </span>
       </div>
