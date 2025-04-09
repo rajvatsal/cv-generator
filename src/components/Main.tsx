@@ -1,6 +1,7 @@
 import './Main.scss'
 import { useState, useEffect } from 'react'
-import { templates, defaultData } from './Templates/Templates.tsx'
+import { templates } from './Templates/Templates.tsx'
+import { defaultData, UserData } from './Templates/defaultData.ts'
 import TemplateSelector from './TemplateSelector.tsx'
 import DownloadButton from './DownloadButton.tsx'
 
@@ -19,7 +20,7 @@ function Main() {
   const previewClassName = `previewer--${pdfOrientation === OrientationPdf.Portrait ? 'portrait' : 'landscape'}`
   const { Controls, Previewer } = templates[template - 1]
 
-  const updateDetails = (data) => {
+  const updateDetails = (data: Partial<UserData>) => {
     setDetails(Object.assign({}, details, data))
   }
 
@@ -45,11 +46,7 @@ function Main() {
           pdfMargin={pdfMargin}
         />
         <TemplateSelector updateTemplate={updateTemplate} />
-        <Controls
-          className="main__controls"
-          updateDetails={updateDetails}
-          details={details}
-        />
+        <Controls updateDetails={updateDetails} details={details} />
       </div>
       <Previewer details={details} previewClassName={previewClassName} />
     </main>

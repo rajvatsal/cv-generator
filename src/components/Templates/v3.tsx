@@ -1,4 +1,6 @@
-function Previewer({ details }) {
+import { UserData } from './defaultData.ts'
+
+function Previewer({ details }: { details: UserData }) {
   return (
     <div>
       <h2>{details.name}</h2>
@@ -8,12 +10,12 @@ function Previewer({ details }) {
   )
 }
 
-function Controls({ name, address, phoneNumber }) {
+function Controls({ details }: { details: UserData }) {
   return (
     <>
-      <h2>{name}</h2>
-      <div>{address}</div>
-      <span>{phoneNumber}</span>
+      <h2>{details.name}</h2>
+      <div>{details.address}</div>
+      <span>{details.phoneNumber}</span>
     </>
   )
 }

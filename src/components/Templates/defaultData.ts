@@ -1,4 +1,58 @@
-const defaultData = {
+// TODO: organize data in a better way that's easier to update and keep track of
+// or export a helper function that gets the mocked data for you
+
+export interface UserData {
+  name: string
+  address: string
+  phoneNumber: string
+  email: string
+  careerObjectives: {
+    id: number
+    data: string
+    isVisible: boolean
+  }[]
+  coreQualifications: {
+    id: number
+    data: string
+    isVisible: boolean
+  }[]
+  education: {
+    id: number
+    isVisible: boolean
+    degree: string
+    date: string
+    subject: string
+    address: string
+    gpa: number
+    extras: {
+      id: number
+      bold: string
+      light: string
+      isVisible: true
+    }[]
+    relevantCourseWork: {
+      id: number
+      data: string
+      isVisible: boolean
+    }[]
+  }[]
+  workExperience: {
+    id: number
+    startDate: string
+    endDate: string
+    jobTitle: string
+    workPlace: string
+    location: string
+    isVisible: boolean
+    responsibilities: {
+      id: number
+      data: string
+      isVisible: true
+    }[]
+  }[]
+}
+
+const defaultData: UserData = {
   name: 'chiara allison',
   address: 'atlanta, ga 30310',
   phoneNumber: '+1 555-555-5555',
@@ -105,26 +159,22 @@ const defaultData = {
   ],
 }
 
-
 const defaultValues = {
   name: 'chiara allison',
   address: 'atlanta, ga 30310',
   phoneNumber: '+1 555-555-5555',
   email: 'example@example.com',
-  careerObjectives:
-  {
+  careerObjectives: {
     id: 1,
     data: 'new objective',
     isVisible: true,
   },
-  coreQualifications:
-  {
+  coreQualifications: {
     id: 1,
     data: 'Critical analysis',
     isVisible: true,
   },
-  education:
-  {
+  education: {
     id: 1,
     isVisible: true,
     degree: 'Bachelor of Science(hons)',
@@ -132,13 +182,19 @@ const defaultValues = {
     subject: 'Computer Science',
     address: 'Georgia State University, Atalanta, GA',
     gpa: 7,
-    extras: { id: 1, bold: 'minor in creative writing', light: '', isVisible: true },
-    relevantCourseWork: { id: 1, data: 'Shakespearean Studies', isVisible: true },
+    extras: {
+      id: 1,
+      bold: 'minor in creative writing',
+      light: '',
+      isVisible: true,
+    },
+    relevantCourseWork: {
+      id: 1,
+      data: 'Shakespearean Studies',
+      isVisible: true,
+    },
   },
-
-  workExperience:
-
-  {
+  workExperience: {
     id: 1,
     startDate: new Date(),
     endDate: new Date(),
@@ -147,7 +203,6 @@ const defaultValues = {
     location: 'Atlanta, GA',
     responsibilities: { id: 1, data: 'blah', isVisible: true },
   },
-
 }
 
 export { defaultData, defaultValues }

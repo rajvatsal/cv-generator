@@ -1,14 +1,27 @@
 import './v1.scss'
 import { isAfter, format } from 'date-fns'
-// Assign a better to default values, default data and defaultValues.ts
-import { defaultValues } from './defaultData.ts'
+// TODO: Assign a better to default values, default data and defaultValues.ts
+import { defaultValues, UserData } from './defaultData.ts'
 import { Input, Textarea } from '../generals/Input.tsx'
 import PersonalDetails from '../PersonalDetails.tsx'
 import ControlSection from '../ControlSection.tsx'
 
-function Previewer({ details, previewClassName }) {
-  let phoneNumber = details.phoneNumber.split(' ')
-  // console.log(phoneNumber)
+// TODO:
+// Combine controls to a single component
+// Use children prop instead of passing inputs as props
+
+interface Previewer {
+  details: UserData
+  previewClassName: string
+}
+
+interface Controls {
+  details: UserData
+  updateDetails: (data: Partial<UserData>) => void
+}
+
+function Previewer({ details, previewClassName }: Previewer) {
+  let phoneNumber: string | string[] = details.phoneNumber.split(' ')
   phoneNumber = `(${phoneNumber[0]}) ${phoneNumber[1]}`
   return (
     <div className={`previewer custom-scrollbar ${previewClassName}`}>
@@ -84,12 +97,14 @@ function Previewer({ details, previewClassName }) {
                   <span className="previewer__bold">GPA: {ed.gpa}</span>
                 </p>
                 <ul className="list--no-style">
-                  {ed.extras.map((ext) => {
-                    if (ext.isVisible === false) return null
+                  {ed.extras.map((extra) => {
+                    if (!extra.isVisible) return null
                     return (
-                      <li key={ext.id}>
-                        <span className="previewer__bold">{ext.bold}</span>
-                        {ext.light === '' ? null : <span>: {ext.light}</span>}
+                      <li key={extra.id}>
+                        <span className="previewer__bold">{extra.bold}</span>
+                        {extra.light === '' ? null : (
+                          <span>: {extra.light}</span>
+                        )}
                       </li>
                     )
                   })}
@@ -135,11 +150,11 @@ function Previewer({ details, previewClassName }) {
                   <span>{we.workPlace}</span>|<span>{we.location}</span>
                 </div>
                 <ul>
-                  {we.responsibilities.map((resp) => {
-                    if (resp.isVisible === false) return null
+                  {we.responsibilities.map((responsibility) => {
+                    if (!responsibility.isVisible) return null
                     return (
-                      <li key={resp.id}>
-                        <p>{resp.data}</p>
+                      <li key={responsibility.id}>
+                        <p>{responsibility.data}</p>
                       </li>
                     )
                   })}
@@ -153,7 +168,7 @@ function Previewer({ details, previewClassName }) {
   )
 }
 
-function CareerObjectives({ details, updateDetails }) {
+function CareerObjectives({ details, updateDetails }: Controls) {
   const listItems = details.careerObjectives
   const bemClassName = 'career-objective'
   const stateName = 'careerObjectives'
@@ -200,7 +215,7 @@ function CareerObjectives({ details, updateDetails }) {
     />
   )
 }
-function CoreQualifications({ details, updateDetails }) {
+function CoreQualifications({ details, updateDetails }: Controls) {
   const listItems = details.coreQualifications
   const bemClassName = 'core-qualifications'
   const stateName = 'coreQualifications'
@@ -395,7 +410,7 @@ function EdInputs({ id, bemClassName, listItems, updateFn, stateName }) {
   )
 }
 
-function Education({ updateDetails, details }) {
+function Education({ updateDetails, details }: Controls) {
   const listItems = details.education
   const bemClassName = 'education'
   const stateName = 'education'
@@ -545,7 +560,7 @@ function WorkExperienceInputs({ listItems, id, updateFn, stateName }) {
   )
 }
 
-function WorkExperience({ updateDetails, details }) {
+function WorkExperience({ updateDetails, details }: Controls) {
   const listItems = details.workExperience
   const bemClassName = 'work-experience'
   const stateName = 'workExperience'
@@ -591,7 +606,7 @@ function WorkExperience({ updateDetails, details }) {
   )
 }
 
-function Controls({ details, updateDetails }) {
+function Controls({ details, updateDetails }: Controls) {
   return (
     <div className="main__controls">
       <PersonalDetails updateDetails={updateDetails} />

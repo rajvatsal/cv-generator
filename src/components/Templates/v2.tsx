@@ -1,4 +1,6 @@
-function Previewer({ details }) {
+import { UserData } from './defaultData.ts'
+
+function Previewer({ details }: { details: UserData }) {
   return (
     <div>
       <h2>{details.name}</h2>
@@ -7,7 +9,7 @@ function Previewer({ details }) {
   )
 }
 
-function Controls({ updateTemplate, updateData, CommonControls }) {
+function Controls() {
   return (
     <div>
       <h5>Controls me</h5>
