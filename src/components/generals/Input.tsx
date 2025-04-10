@@ -1,5 +1,15 @@
 import './Input.scss'
 
+interface Textarea {
+  label: string
+  name: string
+  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+  placeholder: string
+  required?: boolean
+  help?: string
+  extras?: object
+}
+
 function Textarea({
   label = 'Enter something',
   name = 'nm',
@@ -8,7 +18,7 @@ function Textarea({
   required = false,
   help = 'try being sensible in your inputs',
   extras = {},
-}) {
+}: Textarea) {
   return (
     <div className="input-container">
       <textarea
@@ -31,7 +41,19 @@ function Textarea({
   )
 }
 
-export function Input({
+interface Input {
+  label: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  placeholder: string
+  type: string
+  pattern?: string
+  required?: boolean
+  help?: string
+  name?: string
+  extras?: object
+}
+
+function Input({
   label = 'Enter something',
   name = 'nm',
   pattern = '.*',
@@ -41,7 +63,7 @@ export function Input({
   required = false,
   help = 'try being sensible in your inputs',
   extras = {},
-}) {
+}: Input) {
   return (
     <div className="input-container">
       <input
@@ -66,4 +88,4 @@ export function Input({
   )
 }
 
-export { Textarea }
+export { Textarea, Input }
