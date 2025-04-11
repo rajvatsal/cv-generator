@@ -7,17 +7,12 @@ function NestedForm({
   listItems,
   updateFn,
   stateName,
-  Inputs,
-  inputs,
+  children,
   id,
 }) {
   return (
     <div className={`nested-inputs--${bemClassName} nested-form`}>
-      {inputs !== null ? (
-        inputs
-      ) : (
-        <Inputs {...{ id, bemClassName, listItems, updateFn, stateName }} />
-      )}
+      {children}
       <button
         type="button"
         className="btn--accent nested-form__btn--remove"
@@ -36,26 +31,12 @@ function PrimaryForm({
   listItems,
   updateFn,
   stateName,
-  Inputs,
-  inputs,
-  id,
+  children,
 }) {
   return (
     <dialog className={`dialog--${bemClassName} primary-form`}>
       <form method="dialog" action="#">
-        {inputs !== null ? (
-          inputs
-        ) : (
-          <Inputs
-            {...{
-              bemClassName,
-              listItems,
-              updateFn,
-              stateName,
-              id,
-            }}
-          />
-        )}
+        {children}
         <div className="primary-form__button-container">
           <button
             type="button"
@@ -129,6 +110,11 @@ const getLabel = (text) =>
       ? text
       : `${text.slice(0, MAX_LABEL_LENGTH)}...`
 
+interface ListItem {
+  id: number
+  [key: string]: unknown
+}
+
 function ControlSection({
   stateName,
   listItems,
@@ -136,12 +122,19 @@ function ControlSection({
   bemClassName,
   updateFn,
   getLabelText,
-  Inputs,
-  inputs = null,
   addFn = defaultAddFn,
   checkboxFn = defaultCheckboxFn,
   defaultValues = {},
   sectionType = 'section--primary',
+  children,
+}: {
+  stateName: string
+  listItems: ListItem[]
+  bemClassName: string
+  headingName: string
+  sectionType: string
+  children: (id: number | null) => JSX.Element
+  getLabelText: (data: ListItem) => string
 }) {
   const [editingItem, setEditingItem] = useState(null)
   const updateEditingItem = (id = null) => setEditingItem(id)
@@ -160,11 +153,10 @@ function ControlSection({
             listItems,
             stateName,
             updateFn,
-            Inputs,
-            inputs,
-            id: editingItem,
           }}
-        />
+        >
+          {children ? children(editingItem) : null}
+        </PrimaryForm>
       ) : null}
       <ol className="list--no-style control-section__input-container">
         {listItems.map((section) => {
@@ -220,11 +212,11 @@ function ControlSection({
                     listItems,
                     updateFn,
                     stateName,
-                    Inputs,
-                    inputs,
                     id,
                   }}
-                />
+                >
+                  {children ? children(id) : null}
+                </NestedForm>
               ) : null}
             </li>
           )
