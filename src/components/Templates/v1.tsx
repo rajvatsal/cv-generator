@@ -460,25 +460,23 @@ function WorkExperience({ updateDetails, details }: Controls) {
   const getLabelText = (data) => data.jobTitle
   const updateFn = updateDetails
 
-  function addFn() {
-    const { listItems, stateName, updateFn, defaultValues } = this
-
-    const updatedData = listItems.slice()
-    const defaults = defaultValues[stateName]
-    const responsibilities = [defaults.responsibilities]
-    updatedData.push(
-      Object.assign(
-        {},
-        defaults,
-        {
-          id:
-            listItems.length === 0 ? 1 : listItems[listItems.length - 1].id + 1,
-        },
-        { responsibilities }
-      )
-    )
-
-    updateFn({ workExperience: updatedData })
+  const addFn = () => {
+    updateFn({
+      workExperience: [
+        ...listItems.slice(),
+        Object.assign(
+          {},
+          defaultValues[stateName],
+          {
+            id:
+              listItems.length === 0
+                ? 1
+                : listItems[listItems.length - 1].id + 1,
+          },
+          { responsibilities: [defaultValues[stateName].responsibilities] }
+        ),
+      ],
+    })
   }
 
   return (
@@ -511,7 +509,7 @@ function WorkExperience({ updateDetails, details }: Controls) {
             }),
           })
 
-        function changeFn(e: React.ChangeEvent<HTMLInputElement>) {
+        const changeFn = (e: React.ChangeEvent<HTMLInputElement>) => {
           updateFn({
             [stateName]: listItems.map((item) => {
               return item.id !== activeWorkExperience.id
@@ -587,8 +585,8 @@ function WorkExperience({ updateDetails, details }: Controls) {
                           ['responsibilities']: responsibilities.map((item) =>
                             item.id === id
                               ? Object.assign({}, item, {
-                                  data: e.target.value,
-                                })
+                                data: e.target.value,
+                              })
                               : item
                           ),
                         }

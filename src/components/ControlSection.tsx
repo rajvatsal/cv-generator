@@ -2,102 +2,23 @@ import { useState } from 'react'
 import editImg from '/src/assets/edit.svg'
 import './ControlSection.scss'
 
-function NestedForm({
-  bemClassName,
-  listItems,
-  updateFn,
-  stateName,
-  children,
-  id,
-}) {
-  return (
-    <div className={`nested-inputs--${bemClassName} nested-form`}>
-      {children}
-      <button
-        type="button"
-        className="btn--accent nested-form__btn--remove"
-        onClick={() =>
-          updateFn({ [stateName]: listItems.filter((item) => item.id !== id) })
-        }
-      >
-        Remove
-      </button>
-    </div>
-  )
+interface ListItem {
+  id: number
+  [key: string]: unknown
 }
 
-function PrimaryForm({
-  bemClassName,
-  listItems,
-  updateFn,
-  stateName,
-  children,
-}) {
-  return (
-    <dialog className={`dialog--${bemClassName} primary-form`}>
-      <form method="dialog" action="#">
-        {children}
-        <div className="primary-form__button-container">
-          <button
-            type="button"
-            className={`dialog--${bemClassName}__remove-btn btn--accent-light primary-form__btn--remove primary-form__btn`}
-            onClick={() => {
-              const dialog = document.querySelector(`.dialog--${bemClassName}`)
-              const id = dialog.getAttribute('data-id')
-
-              const updatedData = listItems.filter(
-                (obj) => obj.id.toString() !== id
-              )
-              updateFn({ [stateName]: updatedData })
-              dialog.close()
-            }}
-          >
-            Remove
-          </button>
-          <button
-            type="submit"
-            className={`dialog--${bemClassName}__close btn--secondary primary-form__btn--close primary-form__btn`}
-          >
-            Close
-          </button>
-        </div>
-      </form>
-    </dialog>
-  )
-}
-
-function showDialog() {
-  const dialog = document.querySelector(`.dialog--${this.bemClassName}`)
-  dialog.setAttribute('data-id', this.id)
-  dialog.showModal()
-}
-
-function defaultAddFn() {
-  const { listItems, stateName, updateFn, defaultValues } = this
-
-  const updatedData = listItems.slice()
-  const newData =
-    listItems.length === 0
-      ? defaultValues[stateName]
-      : Object.assign({}, defaultValues[stateName], {
-        id: listItems[listItems.length - 1].id + 1,
-      })
-
-  updatedData.push(Object.assign({}, newData))
-  updateFn({ [stateName]: updatedData })
-}
-
-function defaultCheckboxFn(e) {
-  const { listItems, id, updateFn, stateName } = this
-  const updatedData = listItems.map((dataItem) =>
-    dataItem.id === id
-      ? Object.assign({}, dataItem, {
-        isVisible: e.target.checked,
-      })
-      : dataItem
-  )
-
-  updateFn({ [stateName]: updatedData })
+// p_FooBar === props_FooBAR
+interface p_ControlSection {
+  stateName: string
+  listItems: ListItem[]
+  bemClassName: string
+  headingName: string
+  sectionType: string
+  children: (id: number | null) => JSX.Element
+  getLabelText: (data: ListItem) => string
+  updateFn: (data: { [key: string]: unknown }) => void
+  addFn?: () => void
+  defaultValues?: { [key: string]: unknown }
 }
 
 const MAX_LABEL_LENGTH = 25
@@ -110,9 +31,10 @@ const getLabel = (text) =>
       ? text
       : `${text.slice(0, MAX_LABEL_LENGTH)}...`
 
-interface ListItem {
-  id: number
-  [key: string]: unknown
+function showDialog() {
+  const dialog = document.querySelector(`.dialog--${this.bemClassName}`)
+  dialog.setAttribute('data-id', this.id)
+  dialog.showModal()
 }
 
 function ControlSection({
@@ -120,22 +42,13 @@ function ControlSection({
   listItems,
   headingName,
   bemClassName,
-  updateFn,
   getLabelText,
-  addFn = defaultAddFn,
-  checkboxFn = defaultCheckboxFn,
-  defaultValues = {},
   sectionType = 'section--primary',
   children,
-}: {
-  stateName: string
-  listItems: ListItem[]
-  bemClassName: string
-  headingName: string
-  sectionType: string
-  children: (id: number | null) => JSX.Element
-  getLabelText: (data: ListItem) => string
-}) {
+  defaultValues = {},
+  updateFn,
+  addFn,
+}: p_ControlSection) {
   const [editingItem, setEditingItem] = useState(null)
   const updateEditingItem = (id = null) => setEditingItem(id)
 
@@ -147,16 +60,37 @@ function ControlSection({
         <h2 className="main__controls__control-heading">{headingName} #</h2>
       )}
       {sectionType === 'section--primary' ? (
-        <PrimaryForm
-          {...{
-            bemClassName,
-            listItems,
-            stateName,
-            updateFn,
-          }}
-        >
-          {children ? children(editingItem) : null}
-        </PrimaryForm>
+        <dialog className={`dialog--${bemClassName} primary-form`}>
+          <form method="dialog" action="#">
+            {children ? children(editingItem) : null}
+            <div className="primary-form__button-container">
+              <button
+                type="button"
+                className={`dialog--${bemClassName}__remove-btn btn--accent-light primary-form__btn--remove primary-form__btn`}
+                onClick={() => {
+                  const dialog = document.querySelector(
+                    `.dialog--${bemClassName}`
+                  )
+                  const id = editingItem
+
+                  const updatedData = listItems.filter(
+                    (obj) => obj.id.toString() !== id
+                  )
+                  updateFn({ [stateName]: updatedData })
+                  dialog.close()
+                }}
+              >
+                Remove
+              </button>
+              <button
+                type="submit"
+                className={`dialog--${bemClassName}__close btn--secondary primary-form__btn--close primary-form__btn`}
+              >
+                Close
+              </button>
+            </div>
+          </form>
+        </dialog>
       ) : null}
       <ol className="list--no-style control-section__input-container">
         {listItems.map((section) => {
@@ -177,12 +111,17 @@ function ControlSection({
                   className="switchbox"
                   role="switch"
                   aria-checked="true"
-                  onChange={checkboxFn.bind({
-                    listItems,
-                    id,
-                    stateName,
-                    updateFn,
-                  })}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const updatedData = listItems.map((dataItem) =>
+                      dataItem.id === id
+                        ? Object.assign({}, dataItem, {
+                          isVisible: e.target.checked,
+                        })
+                        : dataItem
+                    )
+
+                    updateFn({ [stateName]: updatedData })
+                  }}
                   defaultChecked
                 />
                 <button
@@ -205,18 +144,20 @@ function ControlSection({
                 </button>
               </div>
               {sectionType === 'section--nested' && editingItem === id ? (
-                <NestedForm
-                  data-id={id}
-                  {...{
-                    bemClassName,
-                    listItems,
-                    updateFn,
-                    stateName,
-                    id,
-                  }}
-                >
+                <div className={`nested-inputs--${bemClassName} nested-form`}>
                   {children ? children(id) : null}
-                </NestedForm>
+                  <button
+                    type="button"
+                    className="btn--accent nested-form__btn--remove"
+                    onClick={() =>
+                      updateFn({
+                        [stateName]: listItems.filter((item) => item.id !== id),
+                      })
+                    }
+                  >
+                    Remove
+                  </button>
+                </div>
               ) : null}
             </li>
           )
@@ -225,13 +166,24 @@ function ControlSection({
       <button
         className="Localemain__controls__${bemClassName}__add-btn btn--add btn--primary-2 icons-container"
         type="button"
-        onClick={addFn.bind({
-          defaultValues,
-          listItems,
-          updateFn,
-          stateName,
-          editingItem,
-        })}
+        onClick={
+          addFn
+            ? () => {
+              addFn()
+            }
+            : () => {
+              const updatedData = listItems.slice()
+              const newData =
+                listItems.length === 0
+                  ? defaultValues[stateName]
+                  : Object.assign({}, defaultValues[stateName], {
+                    id: listItems[listItems.length - 1].id + 1,
+                  })
+
+              updatedData.push(Object.assign({}, newData))
+              updateFn({ [stateName]: updatedData })
+            }
+        }
       >
         <div className="btn--add__icn-container">
           <div className=" btn--add__icn--default btn--add__icn-container__icon-div">

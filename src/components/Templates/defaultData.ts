@@ -38,8 +38,8 @@ export interface UserData {
   }[]
   workExperience: {
     id: number
-    startDate: string
-    endDate: string
+    startDate: Date | string
+    endDate: Date | string
     jobTitle: string
     workPlace: string
     location: string
@@ -47,7 +47,7 @@ export interface UserData {
     responsibilities: {
       id: number
       data: string
-      isVisible: true
+      isVisible: boolean
     }[]
   }[]
 }
@@ -201,6 +201,7 @@ const defaultValues = {
     jobTitle: 'Teacher Assistant',
     workPlace: 'Georgia State University',
     location: 'Atlanta, GA',
+    isVisible: true,
     responsibilities: { id: 1, data: 'blah', isVisible: true },
   },
 }
