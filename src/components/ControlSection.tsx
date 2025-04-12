@@ -18,13 +18,13 @@ interface p_ControlSection {
   getLabelText: (data: ListItem) => string
   updateFn: (data: { [key: string]: unknown }) => void
   addFn?: () => void
-  defaultValues?: { [key: string]: unknown }
+  defaultValues?: { [key: string]: ListItem }
 }
 
 const MAX_LABEL_LENGTH = 25
 const fallbackLabel = 'Empty :('
-const isInvalidLabel = (l) => !l.split(' ').find((s) => s !== '')
-const getLabel = (text) =>
+const isInvalidLabel = (l: string) => !l.split(' ').find((s) => s !== '')
+const getLabel = (text: string) =>
   isInvalidLabel(text)
     ? fallbackLabel
     : text.length <= MAX_LABEL_LENGTH
@@ -164,7 +164,7 @@ function ControlSection({
             }
             : () => {
               const updatedData = listItems.slice()
-              const newData =
+              const newData: ListItem =
                 listItems.length === 0
                   ? defaultValues[stateName]
                   : Object.assign({}, defaultValues[stateName], {
