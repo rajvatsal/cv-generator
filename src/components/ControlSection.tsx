@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import editImg from '/src/assets/edit.svg'
 import './ControlSection.scss'
 
@@ -31,12 +31,6 @@ const getLabel = (text) =>
       ? text
       : `${text.slice(0, MAX_LABEL_LENGTH)}...`
 
-function showDialog() {
-  const dialog = document.querySelector(`.dialog--${this.bemClassName}`)
-  dialog.setAttribute('data-id', this.id)
-  dialog.showModal()
-}
-
 function ControlSection({
   stateName,
   listItems,
@@ -49,8 +43,9 @@ function ControlSection({
   updateFn,
   addFn,
 }: p_ControlSection) {
-  const [editingItem, setEditingItem] = useState(null)
-  const updateEditingItem = (id = null) => setEditingItem(id)
+  const [editingItem, setEditingItem] = useState<number | null>(null)
+  const updateEditingItem = (id: number | null = null) => setEditingItem(id)
+  const dialog = useRef<HTMLDialogElement>(null)
 
   return (
     <div className="control-section">
@@ -60,7 +55,7 @@ function ControlSection({
         <h2 className="main__controls__control-heading">{headingName} #</h2>
       )}
       {sectionType === 'section--primary' ? (
-        <dialog className={`dialog--${bemClassName} primary-form`}>
+        <dialog ref={dialog} className={`dialog--${bemClassName} primary-form`}>
           <form method="dialog" action="#">
             {children ? children(editingItem) : null}
             <div className="primary-form__button-container">
@@ -68,16 +63,12 @@ function ControlSection({
                 type="button"
                 className={`dialog--${bemClassName}__remove-btn btn--accent-light primary-form__btn--remove primary-form__btn`}
                 onClick={() => {
-                  const dialog = document.querySelector(
-                    `.dialog--${bemClassName}`
-                  )
                   const id = editingItem
 
-                  const updatedData = listItems.filter(
-                    (obj) => obj.id.toString() !== id
-                  )
+                  const updatedData = listItems.filter((obj) => obj.id !== id)
                   updateFn({ [stateName]: updatedData })
-                  dialog.close()
+                  updateEditingItem()
+                  dialog.current!.close()
                 }}
               >
                 Remove
@@ -98,7 +89,7 @@ function ControlSection({
             sectionType === 'section--primary'
               ? () => {
                 updateEditingItem(id)
-                showDialog.call({ bemClassName, id })
+                dialog.current!.showModal()
               }
               : () => updateEditingItem(id === editingItem ? null : id)
 
