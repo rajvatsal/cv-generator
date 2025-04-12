@@ -30,10 +30,8 @@ function Main() {
 
   // update margin value in css
   useEffect(() => {
-    const root: HTMLElement | null = document.querySelector(':root')
-    if (root !== null) {
-      root.style.setProperty('--pdf-margin', `${pdfMargin}cm`)
-    }
+    const root: HTMLElement = document.querySelector(':root')!
+    root.style.setProperty('--pdf-margin', `${pdfMargin}cm`)
   }, [pdfMargin])
 
   return (
