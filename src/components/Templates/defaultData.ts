@@ -1,7 +1,58 @@
 // TODO: organize data in a better way that's easier to update and keep track of
 // or export a helper function that gets the mocked data for you
+//
+// TODO: normalize this shit state
+// interface UserDataNormalized {
+//   main: {
+//     id: number
+//     data: {
+//       name: string
+//       address: string
+//       phoneNumber: string
+//       email: string
+//     }
+//     children: number[]
+//   }
+//   careerObjectives: {
+//     id: number
+//     data: null
+//     children: number[]
+//   }
+//   coreQualifications: {
+//     id: number
+//     data: null
+//     chlidren: number[]
+//   }
+//   education: {
+//     id: number
+//     data: {
+//       id: number
+//       isVisible: boolean
+//       degree: string
+//       date: string
+//       subject: string
+//       address: string
+//       gpa: number
+//       extras: number[]
+//       relevantCourseWork: number[]
+//     }
+//   }
+//   workExperience: {
+//     id: number
+//     data: {
+//       id: number
+//       startDate: Date | string
+//       endDate: Date | string
+//       jobTitle: string
+//       workPlace: string
+//       location: string
+//       isVisible: boolean
+//       responsibilities: number[]
+//     }
+//   }
+// }
 
-export interface UserData {
+export interface DefaultValues {
   name: string
   address: string
   phoneNumber: string
@@ -10,12 +61,12 @@ export interface UserData {
     id: number
     data: string
     isVisible: boolean
-  }[]
+  }
   coreQualifications: {
     id: number
     data: string
     isVisible: boolean
-  }[]
+  }
   education: {
     id: number
     isVisible: boolean
@@ -24,18 +75,18 @@ export interface UserData {
     subject: string
     address: string
     gpa: number
-    extras: {
-      id: number
-      bold: string
-      light: string
-      isVisible: true
-    }[]
     relevantCourseWork: {
       id: number
       data: string
       isVisible: boolean
-    }[]
-  }[]
+    }
+    extras: {
+      id: number
+      bold: string
+      light: string
+      isVisible: boolean
+    }
+  }
   workExperience: {
     id: number
     startDate: Date | string
@@ -44,12 +95,35 @@ export interface UserData {
     workPlace: string
     location: string
     isVisible: boolean
-    responsibilities: {
-      id: number
-      data: string
-      isVisible: boolean
-    }[]
-  }[]
+    responsibilities: { id: number; data: string; isVisible: boolean }
+  }
+}
+
+export type CareerObjectives_I = DefaultValues['careerObjectives']
+export type CoreQualifications_I = DefaultValues['coreQualifications']
+export type Extras_I = DefaultValues['education']['extras']
+export type RelevantCourseWork_I = DefaultValues['education']['relevantCourseWork']
+export type Responsibilities_I = DefaultValues['workExperience']['responsibilities']
+export type EducationMock_I = DefaultValues['education']
+export type WorkExperienceMock_I = DefaultValues['workExperience']
+export type Education_I = Omit< EducationMock_I, 'extras' | 'relevantCourseWork' > & { extras: Extras_I[]; relevantCourseWork: RelevantCourseWork_I[]
+}
+export type WorkExperience_I = Omit<
+  WorkExperienceMock_I,
+  'responsibilities'
+> & {
+  responsibilities: Responsibilities_I[]
+}
+
+export interface UserData {
+  name: string
+  address: string
+  phoneNumber: string
+  email: string
+  careerObjectives: CareerObjectives_I[]
+  coreQualifications: CoreQualifications_I[]
+  education: Education_I[]
+  workExperience: WorkExperience_I[]
 }
 
 const defaultData: UserData = {
@@ -159,7 +233,7 @@ const defaultData: UserData = {
   ],
 }
 
-const defaultValues = {
+const defaultValues: DefaultValues = {
   name: 'chiara allison',
   address: 'atlanta, ga 30310',
   phoneNumber: '+1 555-555-5555',
