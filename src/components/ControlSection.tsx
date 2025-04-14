@@ -1,24 +1,20 @@
 import { useState, useRef } from 'react'
+import { DefaultValues } from './Templates/defaultData.ts'
 import editImg from '/src/assets/edit.svg'
 import './ControlSection.scss'
 
-interface ListItem {
-  id: number
-  [key: string]: unknown
-}
-
 // p_FooBar === props_FooBAR
-interface p_ControlSection {
+interface p_ControlSection<T, U> {
   stateName: string
-  listItems: ListItem[]
+  listItems: T[]
   bemClassName: string
   headingName: string
-  sectionType: string
   children: (id: number | null) => JSX.Element
-  getLabelText: (data: ListItem) => string
-  updateFn: (data: { [key: string]: unknown }) => void
+  getLabelText: (data: T) => string
+  updateFn: (data: { [key: string]: T[] }) => void
+  sectionType?: string
   addFn?: () => void
-  defaultValues?: { [key: string]: ListItem }
+  defaultValues?: U | null
 }
 
 const MAX_LABEL_LENGTH = 25
@@ -31,7 +27,8 @@ const getLabel = (text: string) =>
       ? text
       : `${text.slice(0, MAX_LABEL_LENGTH)}...`
 
-function ControlSection({
+// TODO: Give more descriptive names to vars ex listItems
+function ControlSection<T, U = DefaultValues>({
   stateName,
   listItems,
   headingName,
@@ -39,10 +36,10 @@ function ControlSection({
   getLabelText,
   sectionType = 'section--primary',
   children,
-  defaultValues = {},
+  defaultValues = null,
   updateFn,
   addFn,
-}: p_ControlSection) {
+}: p_ControlSection<T, U>) {
   const [editingItem, setEditingItem] = useState<number | null>(null)
   const updateEditingItem = (id: number | null = null) => setEditingItem(id)
   const dialog = useRef<HTMLDialogElement>(null)
@@ -63,9 +60,12 @@ function ControlSection({
                 type="button"
                 className={`dialog--${bemClassName}__remove-btn btn--accent-light primary-form__btn--remove primary-form__btn`}
                 onClick={() => {
-                  const id = editingItem
-
-                  const updatedData = listItems.filter((obj) => obj.id !== id)
+                  //
+                  // TODO: Fix id doesn't exist on type T
+                  //
+                  const updatedData = listItems.filter(
+                    (obj) => obj.id !== editingItem
+                  )
                   updateFn({ [stateName]: updatedData })
                   updateEditingItem()
                   dialog.current!.close()
@@ -159,12 +159,10 @@ function ControlSection({
         type="button"
         onClick={
           addFn
-            ? () => {
-              addFn()
-            }
+            ? addFn
             : () => {
               const updatedData = listItems.slice()
-              const newData: ListItem =
+              const newData: T =
                 listItems.length === 0
                   ? defaultValues[stateName]
                   : Object.assign({}, defaultValues[stateName], {

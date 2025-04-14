@@ -1,7 +1,18 @@
 import './v1.scss'
 import { isAfter, format } from 'date-fns'
 // TODO: Assign a better to default values, default data and defaultValues.ts
-import { defaultValues, UserData } from './defaultData.ts'
+import {
+  defaultValues,
+  UserData,
+  CareerObjectives_I,
+  CoreQualifications_I,
+  Education_I,
+  EducationMock_I,
+  WorkExperience_I,
+  Extras_I,
+  RelevantCourseWork_I,
+  Responsibilities_I,
+} from './defaultData.ts'
 import { Input, Textarea } from '../generals/Input.tsx'
 import PersonalDetails from '../PersonalDetails.tsx'
 import ControlSection from '../ControlSection.tsx'
@@ -168,23 +179,24 @@ function Previewer({ details, previewClassName }: Previewer) {
   )
 }
 
+// TODO: Give better names to functions like updateFn should be updateDetails/updateEducation
 function CareerObjectives({ details, updateDetails }: Controls) {
   const listItems = details.careerObjectives
   const bemClassName = 'career-objective'
   const stateName = 'careerObjectives'
   const headingName = 'Career Objective'
   const updateFn = updateDetails
-  const getLabelText = (data: object): string => data.data
+  const getLabelText = (data: CareerObjectives_I): string => data.data
 
   return (
-    <ControlSection
+    <ControlSection<CareerObjectives_I>
       {...{
+        stateName,
         listItems,
         bemClassName,
-        stateName,
         headingName,
-        updateFn,
         getLabelText,
+        updateFn,
         defaultValues,
       }}
     >
@@ -218,10 +230,10 @@ function CoreQualifications({ details, updateDetails }: Controls) {
   const stateName = 'coreQualifications'
   const headingName = 'Core Qualification'
   const updateFn = updateDetails
-  const getLabelText = (data) => data.data
+  const getLabelText = (data: CoreQualifications_I) => data.data
 
   return (
-    <ControlSection
+    <ControlSection<CoreQualifications_I>
       {...{
         listItems,
         bemClassName,
@@ -255,72 +267,79 @@ function CoreQualifications({ details, updateDetails }: Controls) {
   )
 }
 
-function Education({ updateDetails, details }: Controls) {
-  const listItems = details.education
-  const bemClassName = 'education'
+function Education(props: Controls) {
+  const educations = props.details.education
   const stateName = 'education'
-  const headingName = 'Education'
-  const updateFn = updateDetails
-  const getLabelText = (data) => data.degree
+  const updateEducation = props.updateDetails
+  const getLabelText = (data: Education_I): string => data.degree
 
-  function addFn() {
-    const updatedData = listItems.slice()
-    const defaults = defaultValues[stateName]
-    const extras = [defaults.extras]
-    const relevantCourseWork = [defaults.relevantCourseWork]
-    updatedData.push(
+  const addEducation = () => {
+    const defaults: EducationMock_I = defaultValues[stateName]
+    const extras: Extras_I[] = [defaults.extras]
+    const relevantCourseWork: RelevantCourseWork_I[] = [
+      defaults.relevantCourseWork,
+    ]
+    educations.push(
       Object.assign(
         {},
         defaults,
         {
           id:
-            listItems.length === 0 ? 1 : listItems[listItems.length - 1].id + 1,
+            educations.length === 0
+              ? 1
+              : educations[educations.length - 1].id + 1,
         },
         { extras, relevantCourseWork }
       )
     )
 
-    updateFn({ education: updatedData })
+    updateEducation({ education: educations })
   }
 
   return (
-    <ControlSection
+    <ControlSection<Education_I>
       {...{
-        listItems,
-        bemClassName,
         stateName,
-        headingName,
-        updateFn,
         getLabelText,
-        addFn,
         defaultValues,
+        listItems: educations,
+        bemClassName: 'education',
+        headingName: 'Education',
+        addFn: addEducation,
+        updateFn: updateEducation,
       }}
     >
       {(id: number | null): JSX.Element => {
-        const activeEducation = listItems.find((item) => item.id === id)
+        const selectedEd = educations.find((item) => item.id === id)
 
-        const edUpdateFn = (updatedEd) =>
-          updateFn({
-            [stateName]: listItems.map((ed) =>
-              ed.id === id ? Object.assign({}, ed, updatedEd) : ed
+        const updateEducationProperties = (updatedProperty: {
+          [key: string]: Extras_I[] | RelevantCourseWork_I[]
+        }) => {
+          updateEducation({
+            [stateName]: educations.map((education) =>
+              education.id === id
+                ? Object.assign(education, updatedProperty)
+                : education
             ),
           })
-
-        const extras = activeEducation ? activeEducation.extras : null
-        const relevantCourseWork = activeEducation
-          ? activeEducation.relevantCourseWork
-          : null
-
-        function changeFn(e) {
-          const updatedData = listItems.map((ed) => {
-            if (ed.id !== activeEducation.id) return ed
-            return Object.assign({}, ed, {
-              [this.state]: this.getValue ? this.getValue(e) : e.target.value,
-            })
-          })
-
-          updateFn({ [stateName]: updatedData })
         }
+
+        const extras = selectedEd ? selectedEd.extras : null
+        const courseWorks = selectedEd ? selectedEd.relevantCourseWork : null
+
+        const changeEducationProperty =
+          (state: string): React.ChangeEventHandler<HTMLInputElement> =>
+            (e) => {
+              const updatedEducations = educations.map((ed: Education_I) => {
+                return ed.id === id
+                  ? Object.assign(ed, {
+                    [state]: e.target.value,
+                  })
+                  : ed
+              })
+
+              updateEducation({ [stateName]: updatedEducations })
+            }
 
         return (
           <div className="input-fields-container">
@@ -330,7 +349,7 @@ function Education({ updateDetails, details }: Controls) {
                 type="date"
                 name="degree start or end date"
                 className="input--date"
-                onChange={changeFn.bind({ state: 'date' })}
+                onChange={changeEducationProperty('date')}
               />
             </div>
             <h4 className="main__controls__control-heading">About #</h4>
@@ -339,21 +358,21 @@ function Education({ updateDetails, details }: Controls) {
               placeholder="Degree"
               label="Degree"
               name="degree"
-              onChange={changeFn.bind({ state: 'degree' })}
+              onChange={changeEducationProperty('degree')}
             />
             <Input
               type="text"
               placeholder="Subject"
               label="Subject"
               name="subject"
-              onChange={changeFn.bind({ state: 'subject' })}
+              onChange={changeEducationProperty('subject')}
             />
             <Input
               type="text"
               placeholder="Address"
               label="Address"
               name="address"
-              onChange={changeFn.bind({ state: 'address' })}
+              onChange={changeEducationProperty('address')}
             />
             <Input
               type="number"
@@ -365,34 +384,34 @@ function Education({ updateDetails, details }: Controls) {
                 max: 10,
                 min: 1,
               }}
-              onChange={changeFn.bind({ state: 'gpa' })}
+              onChange={changeEducationProperty('gpa')}
             />
 
             {extras && (
-              <ControlSection
+              <ControlSection<Extras_I, EducationMock_I>
                 listItems={extras}
                 stateName="extras"
                 headingName="Extras"
                 bemClassName="extras"
-                updateFn={edUpdateFn}
-                getLabelText={(data) => data.bold}
                 sectionType="section--nested"
                 defaultValues={defaultValues.education}
+                updateFn={updateEducationProperties}
+                getLabelText={(data: Extras_I): string => data.bold}
               >
-                {(id: number | null): JSX.Element => (
+                {(selectedExtrasId: number | null): JSX.Element => (
                   <div className="input-fields-container">
                     <Input
                       type="text"
                       placeholder="Bold Text"
                       label="bold"
                       name="extras_bold"
-                      onChange={(e) => {
-                        const newExtras = extras.map((ext) =>
-                          ext.id !== id
-                            ? ext
-                            : Object.assign({}, ext, { bold: e.target.value })
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const newExtras = extras.map((extra) =>
+                          extra.id === selectedExtrasId
+                            ? Object.assign(extra, { bold: e.target.value })
+                            : extra
                         )
-                        edUpdateFn(Object.assign({}, { ['extras']: newExtras }))
+                        updateEducationProperties({ extras: newExtras })
                       }}
                     />
                     <Input
@@ -400,13 +419,13 @@ function Education({ updateDetails, details }: Controls) {
                       placeholder="Light Text"
                       label="light"
                       name="extras_light"
-                      onChange={(e) => {
-                        const newExtras = extras.map((ext) =>
-                          ext.id !== id
-                            ? ext
-                            : Object.assign({}, ext, { light: e.target.value })
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        const newExtras = extras.map((extra) =>
+                          extra.id === selectedExtrasId
+                            ? Object.assign(extra, { light: e.target.value })
+                            : extra
                         )
-                        edUpdateFn(Object.assign({}, { ['extras']: newExtras }))
+                        updateEducationProperties({ extras: newExtras })
                       }}
                     />
                   </div>
@@ -414,32 +433,34 @@ function Education({ updateDetails, details }: Controls) {
               </ControlSection>
             )}
 
-            {relevantCourseWork && (
-              <ControlSection
-                listItems={relevantCourseWork}
+            {courseWorks && (
+              <ControlSection<RelevantCourseWork_I, EducationMock_I>
+                listItems={courseWorks}
                 stateName="relevantCourseWork"
                 headingName="Relevant Course Work"
                 bemClassName="relevant-course-work"
-                updateFn={edUpdateFn}
-                getLabelText={(data) => data.data}
                 sectionType="section--nested"
                 defaultValues={defaultValues.education}
+                updateFn={updateEducationProperties}
+                getLabelText={(data: RelevantCourseWork_I): string => data.data}
               >
-                {(id: number | null): JSX.Element => (
+                {(selectedCourseWorkId: number | null): JSX.Element => (
                   <Input
                     type="text"
                     placeholder="Relevant Coursework"
                     label="Relevant Coursework"
                     name="relevantCourseWork"
-                    onChange={(e) => {
-                      const rcw = relevantCourseWork.map((ext) =>
-                        ext.id !== id
-                          ? ext
-                          : Object.assign({}, ext, { data: e.target.value })
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      const newCourseWorks = courseWorks.map((courseWork) =>
+                        courseWork.id === selectedCourseWorkId
+                          ? Object.assign(courseWork, {
+                            data: e.target.value,
+                          })
+                          : courseWork
                       )
-                      edUpdateFn(
-                        Object.assign({}, { ['relevantCourseWork']: rcw })
-                      )
+                      updateEducationProperties({
+                        ['relevantCourseWork']: newCourseWorks,
+                      })
                     }}
                   />
                 )}
@@ -457,7 +478,7 @@ function WorkExperience({ updateDetails, details }: Controls) {
   const bemClassName = 'work-experience'
   const stateName = 'workExperience'
   const headingName = 'Work Experience'
-  const getLabelText = (data) => data.jobTitle
+  const getLabelText = (data: WorkExperience_I) => data.jobTitle
   const updateFn = updateDetails
 
   const addFn = () => {
@@ -480,7 +501,7 @@ function WorkExperience({ updateDetails, details }: Controls) {
   }
 
   return (
-    <ControlSection
+    <ControlSection<WorkExperience_I>
       {...{
         listItems,
         addFn,
@@ -560,7 +581,7 @@ function WorkExperience({ updateDetails, details }: Controls) {
               onChange={changeFn.bind({ state: 'location' })}
             />
             {responsibilities && (
-              <ControlSection
+              <ControlSection<Responsibilities_I>
                 stateName="responsibilities"
                 listItems={responsibilities}
                 headingName="Work Experience"
@@ -608,7 +629,7 @@ function Controls({ details, updateDetails }: Controls) {
   return (
     <div className="main__controls">
       <PersonalDetails updateDetails={updateDetails} />
-      <CareerObjectives {...{ details, updateDetails }} />
+      <CareerObjectives {...{ details, updateDetails }} />{' '}
       <CoreQualifications {...{ details, updateDetails }} />
       <Education {...{ details, updateDetails }} />
       <WorkExperience {...{ details, updateDetails }} />

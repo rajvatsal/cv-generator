@@ -102,11 +102,18 @@ export interface DefaultValues {
 export type CareerObjectives_I = DefaultValues['careerObjectives']
 export type CoreQualifications_I = DefaultValues['coreQualifications']
 export type Extras_I = DefaultValues['education']['extras']
-export type RelevantCourseWork_I = DefaultValues['education']['relevantCourseWork']
-export type Responsibilities_I = DefaultValues['workExperience']['responsibilities']
+export type RelevantCourseWork_I =
+  DefaultValues['education']['relevantCourseWork']
+export type Responsibilities_I =
+  DefaultValues['workExperience']['responsibilities']
 export type EducationMock_I = DefaultValues['education']
 export type WorkExperienceMock_I = DefaultValues['workExperience']
-export type Education_I = Omit< EducationMock_I, 'extras' | 'relevantCourseWork' > & { extras: Extras_I[]; relevantCourseWork: RelevantCourseWork_I[]
+export type Education_I = Omit<
+  EducationMock_I,
+  'extras' | 'relevantCourseWork'
+> & {
+  extras: Extras_I[]
+  relevantCourseWork: RelevantCourseWork_I[]
 }
 export type WorkExperience_I = Omit<
   WorkExperienceMock_I,
