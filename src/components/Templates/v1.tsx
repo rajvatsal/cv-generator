@@ -9,6 +9,7 @@ import {
   Education_I,
   EducationMock_I,
   WorkExperience_I,
+  WorkExperienceMock_I,
   Extras_I,
   RelevantCourseWork_I,
   Responsibilities_I,
@@ -474,25 +475,19 @@ function Education(props: Controls) {
 }
 
 function WorkExperience({ updateDetails, details }: Controls) {
-  const listItems = details.workExperience
-  const bemClassName = 'work-experience'
+  const workXps = details.workExperience
+  const updateWorkXp = updateDetails
   const stateName = 'workExperience'
-  const headingName = 'Work Experience'
-  const getLabelText = (data: WorkExperience_I) => data.jobTitle
-  const updateFn = updateDetails
 
-  const addFn = () => {
-    updateFn({
+  const addWorkXp = () => {
+    updateWorkXp({
       workExperience: [
-        ...listItems.slice(),
+        ...workXps.slice(),
         Object.assign(
           {},
           defaultValues[stateName],
           {
-            id:
-              listItems.length === 0
-                ? 1
-                : listItems[listItems.length - 1].id + 1,
+            id: workXps.length === 0 ? 1 : workXps[workXps.length - 1].id + 1,
           },
           { responsibilities: [defaultValues[stateName].responsibilities] }
         ),
@@ -503,42 +498,47 @@ function WorkExperience({ updateDetails, details }: Controls) {
   return (
     <ControlSection<WorkExperience_I>
       {...{
-        listItems,
-        addFn,
-        bemClassName,
+        listItems: workXps,
+        bemClassName: 'work-experience',
+        addFn: addWorkXp,
+        headingName: 'Work Experience',
+        getLabelText: (data: WorkExperience_I) => data.jobTitle,
+        updateFn: updateWorkXp,
         stateName,
-        headingName,
-        getLabelText,
-        updateFn,
         defaultValues,
       }}
     >
-      {(id) => {
-        const activeWorkExperience = id
-          ? listItems.find((item) => item.id === id)
+      {(workXpId: number | null) => {
+        const activeWorkExperience = workXpId
+          ? workXps.find((item) => item.id === workXpId)
           : null
 
         const responsibilities = activeWorkExperience
           ? activeWorkExperience.responsibilities
           : null
 
-        const weUpdateFn = (updatedData) =>
-          updateFn({
-            [stateName]: listItems.map((item) => {
-              if (item.id !== id) return item
-              return Object.assign({}, item, updatedData)
-            }),
-          })
-
-        const changeFn = (e: React.ChangeEvent<HTMLInputElement>) => {
-          updateFn({
-            [stateName]: listItems.map((item) => {
-              return item.id !== activeWorkExperience.id
-                ? item
-                : Object.assign({}, item, { [this.state]: e.target.value })
+        const updateWorkXpProperty = (
+          updatedData: Partial<WorkExperience_I>
+        ) => {
+          updateWorkXp({
+            [stateName]: workXps.map((item) => {
+              if (item.id !== workXpId) return item
+              return Object.assign(item, updatedData)
             }),
           })
         }
+
+        const changeFn =
+          (state: string): React.ChangeEventHandler<HTMLInputElement> =>
+            (e) => {
+              updateWorkXp({
+                [stateName]: workXps.map((item) => {
+                  return item.id !== workXpId
+                    ? item
+                    : Object.assign(item, { [state]: e.target.value })
+                }),
+              })
+            }
 
         return (
           <div className="input-fields-container">
@@ -548,14 +548,14 @@ function WorkExperience({ updateDetails, details }: Controls) {
                 type="date"
                 name="start_date"
                 className="input--date"
-                onChange={changeFn.bind({ state: 'startDate' })}
+                onChange={changeFn('startDate')}
               />
               <span>--</span>
               <input
                 type="date"
                 name="start_date"
                 className="input--date"
-                onChange={changeFn.bind({ state: 'endDate' })}
+                onChange={changeFn('endDate')}
               />
             </div>
             <h4 className="main__controls__control-heading">About #</h4>
@@ -564,34 +564,34 @@ function WorkExperience({ updateDetails, details }: Controls) {
               placeholder="Job Title"
               label="Job Title"
               name="job_title"
-              onChange={changeFn.bind({ state: 'jobTitle' })}
+              onChange={changeFn('jobTitle')}
             />
             <Input
               type="text"
               placeholder="Work Place"
               label="Work Place"
               name="work_place"
-              onChange={changeFn.bind({ state: 'workPlace' })}
+              onChange={changeFn('workPlace')}
             />
             <Input
               type="text"
               placeholder="Location"
               label="Location"
               name="location"
-              onChange={changeFn.bind({ state: 'location' })}
+              onChange={changeFn('location')}
             />
             {responsibilities && (
-              <ControlSection<Responsibilities_I>
+              <ControlSection<Responsibilities_I, WorkExperienceMock_I>
                 stateName="responsibilities"
                 listItems={responsibilities}
-                headingName="Work Experience"
-                bemClassName="work-experience"
+                headingName="Responsibilities"
+                bemClassName="responsibilities"
                 getLabelText={(data) => data.data}
                 sectionType="section--nested"
                 defaultValues={defaultValues.workExperience}
-                updateFn={weUpdateFn}
+                updateFn={updateWorkXpProperty}
               >
-                {(id: number | null) => {
+                {(responsibilitiesId: number | null) => {
                   return (
                     <Textarea
                       placeholder="Explain your responsibilities there"
@@ -604,14 +604,14 @@ function WorkExperience({ updateDetails, details }: Controls) {
                       onChange={(e) => {
                         const updatedData = {
                           ['responsibilities']: responsibilities.map((item) =>
-                            item.id === id
-                              ? Object.assign({}, item, {
+                            item.id === responsibilitiesId
+                              ? Object.assign(item, {
                                 data: e.target.value,
                               })
                               : item
                           ),
                         }
-                        weUpdateFn(updatedData)
+                        updateWorkXpProperty(updatedData)
                       }}
                     />
                   )
