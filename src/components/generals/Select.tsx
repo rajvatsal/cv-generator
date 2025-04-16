@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './Select.scss'
 
-interface SelectProps {
+interface Select_P {
   options: string[]
   selected: number
   version: string
@@ -72,7 +72,7 @@ function V1({ options }: { options: string[] }) {
   )
 }
 
-function V2({ options, onChange, selected }: SelectProps) {
+function V2({ options, onChange, selected }: Select_P) {
   const [selectedItem, setSelectedItem] = useState<number>(selected)
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
 
@@ -126,7 +126,7 @@ function V2({ options, onChange, selected }: SelectProps) {
   )
 }
 
-function Select(props: SelectProps) {
+function Select(props: Select_P) {
   let Jsx
   switch (props.version) {
     case 'v1':

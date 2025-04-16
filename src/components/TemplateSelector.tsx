@@ -1,10 +1,10 @@
 import './TemplateSelector.scss'
 
-interface Props {
+interface TemplateSelector_P {
   updateTemplate: (val: number) => void
 }
 
-function TemplateSelector({ updateTemplate }: Props) {
+function TemplateSelector({ updateTemplate }: TemplateSelector_P) {
   return (
     <div className="template-container">
       <input

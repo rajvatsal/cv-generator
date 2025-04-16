@@ -1,12 +1,24 @@
 import './Input.scss'
 
-interface Textarea {
+interface Textarea_P {
   label: string
   name: string
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   placeholder: string
   required?: boolean
   help?: string
+  extras?: object
+}
+
+interface Input_P {
+  label: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  placeholder: string
+  type: string
+  pattern?: string
+  required?: boolean
+  help?: string
+  name?: string
   extras?: object
 }
 
@@ -18,7 +30,7 @@ function Textarea({
   required = false,
   help = 'try being sensible in your inputs',
   extras = {},
-}: Textarea) {
+}: Textarea_P) {
   return (
     <div className="input-container">
       <textarea
@@ -41,18 +53,6 @@ function Textarea({
   )
 }
 
-interface Input {
-  label: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  placeholder: string
-  type: string
-  pattern?: string
-  required?: boolean
-  help?: string
-  name?: string
-  extras?: object
-}
-
 function Input({
   label = 'Enter something',
   name = 'nm',
@@ -63,7 +63,7 @@ function Input({
   required = false,
   help = 'try being sensible in your inputs',
   extras = {},
-}: Input) {
+}: Input_P) {
   return (
     <div className="input-container">
       <input

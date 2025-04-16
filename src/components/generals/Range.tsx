@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import './Range.scss'
 
-interface RangeProps {
+interface Range_P {
   min: number
   max: number
   step: number
@@ -60,7 +60,7 @@ function Range({
   onChange = () => {
     console.log(`updated ${name}`)
   },
-}: Partial<RangeProps>) {
+}: Partial<Range_P>) {
   const [rangeValue, setRangeValue] = useState<number>(value)
   const percentValue = ((rangeValue - min) / (max - min)) * 100
 

@@ -4,16 +4,16 @@ import { Range } from './generals/Range.tsx'
 import { Select } from './generals/Select.tsx'
 import { OrientationPdf } from './Main.tsx'
 // add types to this package
-import html2pdf from 'html2pdf.js'
+import html2pdf from 'html2pdf.js
 
-interface DownloadBtnProps {
+interface DownloadBtn_P {
   pdfMargin: number
   pdfOrientation: OrientationPdf
   onOrientationChange: React.Dispatch<SetStateAction<number>>
   onMarginChange: React.Dispatch<SetStateAction<number>>
 }
 
-interface PdfOptsProps {
+interface PdfOpts_P {
   isVisible: boolean
   pdfMargin: number
   pdfOrientation: OrientationPdf
@@ -66,7 +66,7 @@ function PdfOpts({
   toggleVisibility,
   onOrientationChange,
   onMarginChange,
-}: PdfOptsProps) {
+}: PdfOpts_P) {
   if (!isVisible) return null
 
   const selectOpts = ['Landscape', 'Portrait']
@@ -140,7 +140,7 @@ function DownloadButton({
   onMarginChange,
   pdfMargin,
   pdfOrientation,
-}: DownloadBtnProps) {
+}: DownloadBtn_P) {
   const [pdfOptsVisibility, setPdfOptsVisibility] = useState<boolean>(false)
   const togglePdfOptsVisibility = () => {
     setPdfOptsVisibility(!pdfOptsVisibility)
