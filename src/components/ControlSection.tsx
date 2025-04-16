@@ -3,8 +3,8 @@ import { DefaultValues } from './Templates/defaultData.ts'
 import editImg from '/src/assets/edit.svg'
 import './ControlSection.scss'
 
-// p_FooBar === props_FooBAR
-interface p_ControlSection<T, U> {
+// FooBar_P === FooBAR_Props
+interface ControlSection_P<T, U> {
   stateName: string
   listItems: T[]
   bemClassName: string
@@ -39,7 +39,7 @@ function ControlSection<T, U = DefaultValues>({
   defaultValues = null,
   updateFn,
   addFn,
-}: p_ControlSection<T, U>) {
+}: ControlSection_P<T, U>) {
   const [editingItem, setEditingItem] = useState<number | null>(null)
   const updateEditingItem = (id: number | null = null) => setEditingItem(id)
   const dialog = useRef<HTMLDialogElement>(null)
