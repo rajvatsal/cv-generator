@@ -182,22 +182,20 @@ function Previewer({ details, previewClassName }: Previewer) {
 
 // TODO: Give better names to functions like updateFn should be updateDetails/updateEducation
 function CareerObjectives({ details, updateDetails }: Controls) {
-  const listItems = details.careerObjectives
-  const bemClassName = 'career-objective'
+  const objectives = details.careerObjectives
   const stateName = 'careerObjectives'
-  const headingName = 'Career Objective'
-  const updateFn = updateDetails
-  const getLabelText = (data: CareerObjectives_I): string => data.data
+  const updateObjectives = updateDetails
+  const bemClassName = 'career-objective'
 
   return (
     <ControlSection<CareerObjectives_I>
       {...{
+        listItems: objectives,
+        headingName: 'Career Objective',
+        getLabelText: (data: CareerObjectives_I): string => data.data,
         stateName,
-        listItems,
         bemClassName,
-        headingName,
-        getLabelText,
-        updateFn,
+        updateFn: updateObjectives,
         defaultValues,
       }}
     >
@@ -211,12 +209,12 @@ function CareerObjectives({ details, updateDetails }: Controls) {
             extras={{ rows: '5', cols: '33' }}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               const updatedData = {
-                [stateName]: listItems.map((data) => {
+                [stateName]: objectives.map((data) => {
                   if (id !== data.id) return data
                   return Object.assign({}, data, { data: e.target.value })
                 }),
               }
-              updateFn(updatedData)
+              updateObjectives(updatedData)
             }}
           />
         </>
