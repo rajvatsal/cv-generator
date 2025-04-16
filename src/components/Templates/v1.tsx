@@ -226,26 +226,23 @@ function CareerObjectives({ details, updateDetails }: Controls) {
 }
 
 function CoreQualifications({ details, updateDetails }: Controls) {
-  const listItems = details.coreQualifications
-  const bemClassName = 'core-qualifications'
+  const qualifications = details.coreQualifications
   const stateName = 'coreQualifications'
-  const headingName = 'Core Qualification'
-  const updateFn = updateDetails
-  const getLabelText = (data: CoreQualifications_I) => data.data
+  const updateQalifications = updateDetails
 
   return (
     <ControlSection<CoreQualifications_I>
       {...{
-        listItems,
-        bemClassName,
+        listItems: qualifications,
+        bemClassName: 'core-qualifications',
+        headingName: 'Core Qualification',
+        getLabelText: (data: CoreQualifications_I): string => data.data,
         stateName,
-        headingName,
-        updateFn,
-        getLabelText,
+        updateFn: updateQalifications,
         defaultValues,
       }}
     >
-      {(id: number | null) => (
+      {(selectedQualification: number | null) => (
         <div className="input-fields-container">
           <h4 className="main__controls__control-heading">Qualification #</h4>
           <Input
@@ -253,13 +250,13 @@ function CoreQualifications({ details, updateDetails }: Controls) {
             placeholder="Quailification"
             label="Quailification"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              const updatedData = listItems.map((data) =>
-                data.id !== id
+              const updatedData = qualifications.map((data) =>
+                data.id !== selectedQualification
                   ? data
                   : Object.assign({}, data, { data: e.target.value })
               )
 
-              updateFn({ [stateName]: updatedData })
+              updateQalifications({ [stateName]: updatedData })
             }}
           />
         </div>
