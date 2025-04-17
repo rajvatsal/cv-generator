@@ -28,7 +28,7 @@ const getLabel = (text: string) =>
       : `${text.slice(0, MAX_LABEL_LENGTH)}...`
 
 // TODO: Give more descriptive names to vars ex listItems
-function ControlSection<T, U = DefaultValues>({
+function ControlSection<T extends { id: number }, U = DefaultValues>({
   stateName,
   listItems,
   headingName,
