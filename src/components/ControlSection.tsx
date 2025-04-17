@@ -1,10 +1,9 @@
 import { useState, useRef } from 'react'
-import { DefaultValues } from './Templates/defaultData.ts'
 import editImg from '/src/assets/edit.svg'
 import './ControlSection.scss'
 
 // FooBar_P === FooBAR_Props
-interface ControlSection_P<T, U> {
+interface ControlSection_P<T> {
   stateName: string
   listItems: T[]
   bemClassName: string
@@ -12,9 +11,8 @@ interface ControlSection_P<T, U> {
   children: (id: number | null) => JSX.Element
   getLabelText: (data: T) => string
   updateFn: (data: { [key: string]: T[] }) => void
+  addFn: (e: React.MouseEvent<HTMLButtonElement>) => void
   sectionType?: string
-  addFn?: () => void
-  defaultValues?: U | null
 }
 
 const MAX_LABEL_LENGTH = 25
@@ -28,7 +26,8 @@ const getLabel = (text: string) =>
       : `${text.slice(0, MAX_LABEL_LENGTH)}...`
 
 // TODO: Give more descriptive names to vars ex listItems
-function ControlSection<T extends { id: number }, U = DefaultValues>({
+// TODO: Rename addFn to onClickAddHandler or maybe something shorter
+function ControlSection<T extends { id: number }>({
   stateName,
   listItems,
   headingName,
@@ -36,10 +35,9 @@ function ControlSection<T extends { id: number }, U = DefaultValues>({
   getLabelText,
   sectionType = 'section--primary',
   children,
-  defaultValues = null,
   updateFn,
   addFn,
-}: ControlSection_P<T, U>) {
+}: ControlSection_P<T>) {
   const [editingItem, setEditingItem] = useState<number | null>(null)
   const updateEditingItem = (id: number | null = null) => setEditingItem(id)
   const dialog = useRef<HTMLDialogElement>(null)
@@ -157,22 +155,7 @@ function ControlSection<T extends { id: number }, U = DefaultValues>({
       <button
         className="Localemain__controls__${bemClassName}__add-btn btn--add btn--primary-2 icons-container"
         type="button"
-        onClick={
-          addFn
-            ? addFn
-            : () => {
-              const updatedData = listItems.slice()
-              const newData: T =
-                listItems.length === 0
-                  ? defaultValues[stateName]
-                  : Object.assign({}, defaultValues[stateName], {
-                    id: listItems[listItems.length - 1].id + 1,
-                  })
-
-              updatedData.push(Object.assign({}, newData))
-              updateFn({ [stateName]: updatedData })
-            }
-        }
+        onClick={addFn}
       >
         <div className="btn--add__icn-container">
           <div className=" btn--add__icn--default btn--add__icn-container__icon-div">

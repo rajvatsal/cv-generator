@@ -9,7 +9,6 @@ import {
   Education_I,
   EducationMock_I,
   WorkExperience_I,
-  WorkExperienceMock_I,
   Extras_I,
   RelevantCourseWork_I,
   Responsibilities_I,
@@ -180,6 +179,26 @@ function Previewer({ details, previewClassName }: Previewer) {
   )
 }
 
+function defaultAddFn<T extends { id: number }>(
+  listItems: T[],
+  stateName: string,
+  updateFn: (data: { [key: string]: T[] }) => void,
+  defaults: T
+): React.MouseEventHandler<HTMLButtonElement> {
+  return () => {
+    const updatedData = listItems.slice()
+    const newData =
+      listItems.length === 0
+        ? defaults
+        : Object.assign({}, defaults, {
+          id: listItems[listItems.length - 1].id + 1,
+        })
+
+    updatedData.push(Object.assign({}, newData))
+    updateFn({ [stateName]: updatedData })
+  }
+}
+
 // TODO: Give better names to functions like updateFn should be updateDetails/updateEducation
 function CareerObjectives({ details, updateDetails }: Controls) {
   const objectives = details.careerObjectives
@@ -196,7 +215,12 @@ function CareerObjectives({ details, updateDetails }: Controls) {
         stateName,
         bemClassName,
         updateFn: updateObjectives,
-        defaultValues,
+        addFn: defaultAddFn<CareerObjectives_I>(
+          objectives,
+          stateName,
+          updateObjectives,
+          defaultValues.careerObjectives
+        ),
       }}
     >
       {(id: number | null): JSX.Element => (
@@ -237,7 +261,12 @@ function CoreQualifications({ details, updateDetails }: Controls) {
         getLabelText: (data: CoreQualifications_I): string => data.data,
         stateName,
         updateFn: updateQalifications,
-        defaultValues,
+        addFn: defaultAddFn<CoreQualifications_I>(
+          qualifications,
+          stateName,
+          updateQalifications,
+          defaultValues.coreQualifications
+        ),
       }}
     >
       {(selectedQualification: number | null) => (
@@ -308,9 +337,9 @@ function Education(props: Controls) {
       {(id: number | null): JSX.Element => {
         const selectedEd = educations.find((item) => item.id === id)
 
-        const updateEducationProperties = (updatedProperty: {
-          [key: string]: Extras_I[] | RelevantCourseWork_I[]
-        }) => {
+        const updateEducationProperties = (
+          updatedProperty: Partial<Education_I>
+        ) => {
           updateEducation({
             [stateName]: educations.map((education) =>
               education.id === id
@@ -384,15 +413,20 @@ function Education(props: Controls) {
             />
 
             {extras && (
-              <ControlSection<Extras_I, EducationMock_I>
+              <ControlSection<Extras_I>
                 listItems={extras}
                 stateName="extras"
                 headingName="Extras"
                 bemClassName="extras"
                 sectionType="section--nested"
-                defaultValues={defaultValues.education}
                 updateFn={updateEducationProperties}
                 getLabelText={(data: Extras_I): string => data.bold}
+                addFn={defaultAddFn<Extras_I>(
+                  extras,
+                  'extras',
+                  updateEducationProperties,
+                  defaultValues.education.extras
+                )}
               >
                 {(selectedExtrasId: number | null): JSX.Element => (
                   <div className="input-fields-container">
@@ -430,15 +464,20 @@ function Education(props: Controls) {
             )}
 
             {courseWorks && (
-              <ControlSection<RelevantCourseWork_I, EducationMock_I>
+              <ControlSection<RelevantCourseWork_I>
                 listItems={courseWorks}
                 stateName="relevantCourseWork"
                 headingName="Relevant Course Work"
                 bemClassName="relevant-course-work"
                 sectionType="section--nested"
-                defaultValues={defaultValues.education}
                 updateFn={updateEducationProperties}
                 getLabelText={(data: RelevantCourseWork_I): string => data.data}
+                addFn={defaultAddFn<RelevantCourseWork_I>(
+                  courseWorks,
+                  'relevantCourseWork',
+                  updateEducationProperties,
+                  defaultValues.education.relevantCourseWork
+                )}
               >
                 {(selectedCourseWorkId: number | null): JSX.Element => (
                   <Input
@@ -576,15 +615,20 @@ function WorkExperience({ updateDetails, details }: Controls) {
               onChange={changeFn('location')}
             />
             {responsibilities && (
-              <ControlSection<Responsibilities_I, WorkExperienceMock_I>
+              <ControlSection<Responsibilities_I>
                 stateName="responsibilities"
                 listItems={responsibilities}
                 headingName="Responsibilities"
                 bemClassName="responsibilities"
                 getLabelText={(data) => data.data}
                 sectionType="section--nested"
-                defaultValues={defaultValues.workExperience}
                 updateFn={updateWorkXpProperty}
+                addFn={defaultAddFn<Responsibilities_I>(
+                  responsibilities,
+                  'responsibilities',
+                  updateWorkXpProperty,
+                  defaultValues.workExperience.responsibilities
+                )}
               >
                 {(responsibilitiesId: number | null) => {
                   return (
