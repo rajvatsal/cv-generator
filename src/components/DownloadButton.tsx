@@ -3,7 +3,6 @@ import { SetStateAction, useState } from 'react'
 import { Range } from './generals/Range.tsx'
 import { Select } from './generals/Select.tsx'
 import { OrientationPdf } from './Main.tsx'
-// add types to this package
 import html2pdf from 'html2pdf.js'
 
 interface DownloadBtn_P {
