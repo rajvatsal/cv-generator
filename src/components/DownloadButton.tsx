@@ -51,6 +51,7 @@ async function downloadPdf() {
       orientation: orientation,
     },
   }
+  // TODO: Fix ts warning
   await html2pdf().from(preview).set(opts).save()
 }
 
