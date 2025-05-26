@@ -1,23 +1,20 @@
 import './Main.scss'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, SetStateAction } from 'react'
 import { templates } from './Templates/Templates.tsx'
 import { defaultData, UserData } from './Templates/defaultData.ts'
 import TemplateSelector from './TemplateSelector.tsx'
 import DownloadButton from './DownloadButton.tsx'
 
-export enum OrientationPdf {
-  Portrait,
-  Landscpe,
-}
+export type PdfOrientation = 'Portrait' | 'Landscape'
+export type SetPdfOrientation = React.Dispatch<SetStateAction<PdfOrientation>>
 
 function Main() {
   const [template, setTemplate] = useState<number>(1)
   const [details, setDetails] = useState(defaultData)
-  const [pdfOrientation, setPdfOrientation] = useState<OrientationPdf>(
-    OrientationPdf.Portrait
-  )
+  const [pdfOrientation, setPdfOrientation] =
+    useState<PdfOrientation>('Portrait')
   const [pdfMargin, setPdfMargin] = useState<number>(2)
-  const previewClassName = `previewer--${pdfOrientation === OrientationPdf.Portrait ? 'portrait' : 'landscape'}`
+  const previewClassName = `previewer--${pdfOrientation === 'Portrait' ? 'portrait' : 'landscape'}`
   const { Controls, Previewer } = templates[template - 1]
 
   const updateDetails = (data: Partial<UserData>) => {

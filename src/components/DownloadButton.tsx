@@ -2,22 +2,22 @@ import './DownloadButton.scss'
 import { SetStateAction, useState } from 'react'
 import { Range } from './generals/Range.tsx'
 import { Select } from './generals/Select.tsx'
-import { OrientationPdf } from './Main.tsx'
+import { PdfOrientation, SetPdfOrientation } from './Main.tsx'
 import html2pdf from 'html2pdf.js'
 
 interface DownloadBtn_P {
   pdfMargin: number
-  pdfOrientation: OrientationPdf
-  onOrientationChange: React.Dispatch<SetStateAction<number>>
+  pdfOrientation: PdfOrientation
+  onOrientationChange: SetPdfOrientation
   onMarginChange: React.Dispatch<SetStateAction<number>>
 }
 
 interface PdfOpts_P {
   isVisible: boolean
   pdfMargin: number
-  pdfOrientation: OrientationPdf
+  pdfOrientation: PdfOrientation
   toggleVisibility: () => void
-  onOrientationChange: React.Dispatch<SetStateAction<number>>
+  onOrientationChange: SetPdfOrientation
   onMarginChange: React.Dispatch<SetStateAction<number>>
 }
 
@@ -97,18 +97,12 @@ function PdfOpts({
           options={selectOpts}
           version="v2"
           onChange={(e: string) => {
-            onOrientationChange(
-              e === 'Portrait'
-                ? OrientationPdf.Portrait
-                : OrientationPdf.Landscpe
-            )
+            onOrientationChange(e === 'Portrait' ? 'Portrait' : 'Landscape')
           }}
           selected={selectOpts.findIndex(
             (item) =>
               item.toLowerCase() ===
-              (pdfOrientation === OrientationPdf.Portrait
-                ? 'portrait'
-                : 'landscape')
+              (pdfOrientation === 'Portrait' ? 'portrait' : 'landscape')
           )}
         />
       </div>
